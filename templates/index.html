@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>BE KnowledgeGraph Visualization</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <link href="{% static 'plugins/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static 'css/popoto.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static 'plugins/css/style.css' %}" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <style>
+        #popoto-graph:fullscreen {
+            width: 100%;
+            height: 100%;
+        }
+
+        #popoto-graph:-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+        }
+
+        #popoto-graph:-moz-full-screen {
+            width: 100%;
+            height: 100%;
+        }
+
+        #popoto-graph:-ms-fullscreen {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <a class="brand-logo">
+            <img class="logo-abbr" src="{% static 'images/graph-icon.png' %}">
+            <img class="brand-title" src="{% static 'images/knowledge-graph.png' %}">
+        </a>
+
+        <div class="nav-control">
+            <div class="hamburger">
+                <span class="line"></span><span class="line"></span><span class="line"></span>
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar">
+                            Profile
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="dlabnav">
+        <div class="dlabnav-scroll">
+            <ul class="metismenu" id="menu">
+                <li class="{% block index %}mm-active{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'index' %}" aria-expanded="false">
+                        <svg t="1623587039703" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="3481" width="200" height="200">
+                            <path d="M336.2 571.3h337.9v319.3H336.2z" fill="#2867CE" p-id="3482"></path>
+                            <path d="M296.3 405.6l185-185c9-9 20.9-13.5 32.7-13.5 11.9 0 23.7 4.5 32.7 13.5l185.7 185.7 194.1 194.1c1.9 1.9 5.1 1.3 6.2-1.1 7.9-17.9 12.1-37.4 12.1-57.5 0-38.1-14.8-73.8-41.7-100.7L614.7 152.6c-55.6-55.5-145.9-55.5-201.5 0L124.9 441C98 467.9 83.2 503.6 83.2 541.7c0 20.1 4.2 39.7 12.1 57.5 1.1 2.4 4.3 3 6.2 1.1l194.8-194.7z"
+                                  fill="#2867CE" p-id="3483"></path>
+                            <path d="M201.6 566.2c-5.4 5.4-8.4 12.7-8.4 20.3v230.7c0 54.3 44 98.3 98.3 98.3h103.3c10.4 0 18.9-8.4 18.9-18.9V640.7c0-11.4 14.1-16.5 24.2-16.5h152.3c11.6 0 24.2 6.3 24.2 16.5v255.9c0 10.4 8.4 18.9 18.9 18.9h103.3c54.3 0 98.3-44.1 98.3-98.3V586.5c0-7.6-3-14.9-8.4-20.3L526 265.9c-6.7-6.7-17.4-6.7-24.1 0L201.6 566.2z"
+                                  fill="#BDD2EF" p-id="3484"></path>
+                        </svg>
+                        <span class="nav-text">首页</span>
+                    </a>
+                </li>
+                <li class="{% block entity %}{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'entity' %}" aria-expanded="false">
+                        <svg t="1623587202320" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="2930" width="200" height="200">
+                            <path d="M602.112 557.056l185.792 160.768a112 112 0 1 1-20.16 24.832l-185.6-160.64 19.968-24.96z m-178.944-1.024l20 24.96-186.944 161.664a112 112 0 1 1-20.16-24.832l187.104-161.792zM864 720a80 80 0 1 0 0 160 80 80 0 0 0 0-160z m-704 0a80 80 0 1 0 0 160 80 80 0 0 0 0-160z m352-672a112 112 0 0 1 16 222.848v143.744h-32V270.88A112 112 0 0 1 512 48z m0 32a80 80 0 1 0 0 160 80 80 0 0 0 0-160z"
+                                  fill="#646E7F" p-id="2931"></path>
+                            <path d="M864 192a96 96 0 1 1-74.976 155.968l-172.896 122.688a112 112 0 0 1-88.096 152.224v178.464a96 96 0 1 1-32 0l-0.032-178.464a112 112 0 0 1-88.096-152.32l-172.96-122.56a96 96 0 1 1 15.584-27.904l173.344 122.784A111.808 111.808 0 0 1 512 400c35.84 0 67.712 16.8 88.192 42.976l173.28-122.912A96 96 0 0 1 864 192z m-352 240a80 80 0 1 0 0 160 80 80 0 0 0 0-160z"
+                                  fill="#13C0FF" p-id="2932"></path>
+                        </svg>
+                        <span class="nav-text">实体查询</span>
+                    </a>
+                </li>
+                <li class="{% block relationship %}{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'relationship' %}" aria-expanded="false">
+                        <svg t="1624712242353" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="2592" width="200" height="200">
+                            <path d="M554.83 358.12a28.4 28.4 0 0 1-10.56-54.77 215.17 215.17 0 0 1 51.09-13.57 28.4 28.4 0 0 1 6.49 56.42 162.35 162.35 0 0 0-36.48 9.88 28.21 28.21 0 0 1-10.54 2.04zM528.58 676.17a28.43 28.43 0 0 1-26.12-39.51 69.23 69.23 0 0 0 5.18-27.2c0-12.26-2.59-26.06-7.72-41a28.4 28.4 0 0 1 53.73-18.39c7.15 20.9 10.78 40.88 10.78 59.41a125.4 125.4 0 0 1-9.71 49.41 28.39 28.39 0 0 1-26.14 17.28z m-38.51-171.23a28.41 28.41 0 0 1-26.88-19.26c-7.06-20.75-10.63-40.59-10.63-59a125.53 125.53 0 0 1 9.91-49.88 28.39 28.39 0 0 1 52.17 22.43 69 69 0 0 0-5.29 27.45c0 12.15 2.56 25.85 7.61 40.7a28.4 28.4 0 0 1-26.89 37.54zM418.39 746.57a28.4 28.4 0 0 1-3.18-56.57 162.2 162.2 0 0 0 36.43-9.88 28.39 28.39 0 0 1 21.08 52.73 215.49 215.49 0 0 1-51.08 13.59 29.61 29.61 0 0 1-3.25 0.13z"
+                                  fill="#303030" p-id="2593"></path>
+                            <path d="M763.35 298.08m-136.04 0a136.04 136.04 0 1 0 272.08 0 136.04 136.04 0 1 0-272.08 0Z"
+                                  fill="#279ACC" p-id="2594"></path>
+                            <path d="M763.34 462.51c-90.66 0-164.42-73.77-164.42-164.43s73.76-164.43 164.42-164.43 164.44 73.76 164.44 164.43S854 462.51 763.34 462.51z m0-272.07A107.64 107.64 0 1 0 871 298.08a107.76 107.76 0 0 0-107.66-107.64z"
+                                  fill="#303030" p-id="2595"></path>
+                            <path d="M253.65 702.59m-136.04 0a136.04 136.04 0 1 0 272.08 0 136.04 136.04 0 1 0-272.08 0Z"
+                                  fill="#279ACC" p-id="2596"></path>
+                            <path d="M253.65 867C163 867 89.21 793.27 89.21 702.6S163 538.16 253.65 538.16s164.43 73.77 164.43 164.44S344.32 867 253.65 867z m0-272.07A107.65 107.65 0 1 0 361.3 702.6 107.77 107.77 0 0 0 253.65 595z"
+                                  fill="#303030" p-id="2597"></path>
+                        </svg>
+                        <span class="nav-text">关系查询</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--**********************************
+        Sidebar end
+    ***********************************-->
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+        <div class="container-fluid">
+            {% block body %}
+                <section class="ppt-section-main">
+                    {#                    <div class="ppt-section-header">#}
+                    {#                        <span class="ppt-header-span">KnowledgePoints</span> display#}
+                    {#                    </div>#}
+                    <div class="ppt-container-graph">
+                        <nav id="popoto-taxonomy" class="ppt-taxo-nav">
+                            <!-- Label/taxonomy filter will be generated here -->
+                        </nav>
+                        <div id="popoto-graph" class="ppt-div-graph">
+                            <!-- Graph will be generated here-->
+                        </div>
+                    </div>
+
+                    <div id="popoto-query" class="ppt-container-query">
+                        <!-- Query viewer will be generated here -->
+                    </div>
+
+                    <div id="popoto-cypher" class="ppt-container-cypher">
+                        <!-- Cypher query viewer will be generated here -->
+                    </div>
+
+                    <div class="ppt-section-header">
+                        <!-- The total results count is updated with a listener defined below -->
+                        RESULTS <span id="result-total-count" class="ppt-count"></span>
+                    </div>
+
+                    <div id="popoto-results" class="ppt-container-results">
+                        <!-- Results will be generated here -->
+                    </div>
+                </section>
+            {% endblock %}
+        </div>
+    </div>
+    <!--**********************************
+        Content body end
+    ***********************************-->
+
+
+    <!--**********************************
+        Footer start
+    ***********************************-->
+    <div class="footer">
+        <div class="copyright">
+            <p>Copyright © 曾大帅 &amp; Developed by 2021</p>
+        </div>
+    </div>
+    <!--**********************************
+        Footer end
+    ***********************************-->
+
+
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+<!--removeIf(production)-->
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/popoto.min.js' %}"></script>
+<script src="{% static 'plugins/vendor/global/global.min.js' %}"></script>
+<script src="{% static 'plugins/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/js/custom.min.js' %}"></script>
+<script src="{% static 'plugins/js/dlabnav-init.js' %}"></script>
+<script>
+
+    popoto.graph.link.SHOW_MARKER = true;
+
+    // 连接到neo4j数据库
+    popoto.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit";
+    popoto.rest.AUTHORIZATION = "Basic " + btoa("neo4j:ztj19991124");
+
+    // 定义标签提供程序列表以自定义图形行为:
+    popoto.provider.node.Provider = {
+        "课程": {
+            "returnAttributes": ["name",],
+            "constraintAttribute": "name"
+        },
+        "一级知识点": {
+            "returnAttributes": ["name",],
+            "constraintAttribute": "name"
+        },
+        "二级知识点": {
+            "returnAttributes": ["name",],
+            "constraintAttribute": "name"
+        },
+        "三级知识点": {
+            "returnAttributes": ["name",],
+            "constraintAttribute": "name"
+        },
+    };
+
+    // 更改显示结果的数量:
+    popoto.query.RESULTS_PAGE_SIZE = 100;
+    // 在Web浏览器控制台中添加调试跟踪
+    popoto.logger.LEVEL = popoto.logger.LogLevels.INFO;
+    // 在返回的结果计数上添加一个侦听器以更新页面中的计数
+    popoto.result.onTotalResultCount(function (count) {
+        d3.select("#rescount").text(function (d) {
+            return "(" + count + ")";
+        });
+    });
+
+    popoto.start("课程");
+
+</script>
+</body>
+
+</html>

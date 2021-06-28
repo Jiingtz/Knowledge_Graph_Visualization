@@ -1,0 +1,68 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="137" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="1">
+            <item index="0" class="java.lang.String" itemvalue="torch" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E131" />
+          <option value="E722" />
+          <option value="E741" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+          <option value="N802" />
+          <option value="N803" />
+          <option value="N812" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="pyspark-stubs==3.0.0.post1" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="svm.C_SVC" />
+          <option value="str.decode" />
+          <option value="tensorflow.flags" />
+          <option value="tensorflow.python_io" />
+          <option value="tensorflow.FixedLenFeature" />
+          <option value="str.to" />
+          <option value="dict.iterkeys" />
+          <option value="ValueError.message" />
+          <option value="机器学习与模式识别.Experiment2.乳腺癌预测.common" />
+          <option value="range.tolist" />
+          <option value="pyecharts.options.series_options.LabelOpts.__getitem__" />
+          <option value="pyspark.sql.functions.col" />
+          <option value="pyspark.sql.functions.desc" />
+          <option value="pyspark.sql.functions.count" />
+          <option value="pyspark.sql.functions.avg" />
+          <option value="pyspark.sql.functions.collect_list" />
+          <option value="pyspark.sql.functions.lit" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

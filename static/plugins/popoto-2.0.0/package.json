@@ -1,0 +1,62 @@
+{
+  "name": "popoto",
+  "version": "2.0.0",
+  "description": "Graph based search interface for Neo4j database.",
+  "keywords": [
+    "popoto",
+    "d3",
+    "neo4j",
+    "cypher",
+    "graph",
+    "search"
+  ],
+  "homepage": "https://popotojs.com/",
+  "bugs": {
+    "url": "https://github.com/Nhogs/popoto/issues",
+    "email": "contact@popotojs.com"
+  },
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Frederic Ciminera",
+    "email": "contact@popotojs.com"
+  },
+  "contributors": [],
+  "main": "dist/popoto.node.js",
+  "unpkg": "dist/popoto.min.js",
+  "jsdelivr": "dist/popoto.min.js",
+  "module": "index",
+  "jsnext:main": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nhogs/popoto.git"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-canvas-mock"
+    ]
+  },
+  "scripts": {
+    "build": "rimraf dist && mkdir dist && json2module package.json > dist/package.js && node rollup.node && rollup -c --banner \"// Copyright (c) 2018 NHOGS Interactive.\" && npm run uglify",
+    "pretest": "npm run build",
+    "test": "jest --ci --coverage",
+    "uglify": "uglifyjs -b beautify=false,preamble=\"'// Copyright (c) 2018 NHOGS Interactive.'\" dist/popoto.js -c negate_iife=false -m -o dist/popoto.min.js && uglifycss css/popoto.css css/popoto-svg.css --output dist/popoto.min.css"
+  },
+  "dependencies": {
+    "d3": "^5.1.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "jest": "^22.4.3",
+    "jest-canvas-mock": "^1.0.2",
+    "json2module": "^0.0.3",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.58.2",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "uglify-js": "^3.3.22",
+    "uglifycss": "^0.0.29"
+  }
+}

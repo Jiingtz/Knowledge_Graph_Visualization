@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block index %}{% endblock %}
+{% block entity %}{% endblock %}
+{% block relationship %}mm-active{% endblock %}
+{% block body %}
+    <br>
+    <ul class="navbar-nav header-right">
+        <li class="nav-item">
+            <div class="input-group search-area d-lg-inline-flex d-none" style="width: 100%">
+                <div class="input-group-append">
+                                    <span class="input-group-text"><a href="javascript:void(0)"><i
+                                            class="flaticon-381-search-2"></i></a></span>
+                </div>
+                <input type="text" class="form-control" placeholder="请输入关系名称...">
+            </div>
+        </li>
+    </ul>
+{% endblock %}
