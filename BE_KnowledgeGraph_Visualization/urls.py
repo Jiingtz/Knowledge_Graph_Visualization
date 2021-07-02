@@ -20,6 +20,6 @@ from knowledgeGraph import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
-    path('entity/', views.entity, name='entity'),
+    path('query/', views.query, name='query'),
     path('relationship/', views.relationship, name='relationship'),
 ]

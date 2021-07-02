@@ -4,12 +4,13 @@ from knowledgeGraph import Neo4j_Model
 
 
 # Create your views here.
+
 def index(request):
     return render(request, 'index.html')
 
 
-def entity(request):
-    return render(request, 'entity.html')
+def query(request):
+    return render(request, 'query.html')
 
 
 def relationship(request):

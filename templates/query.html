@@ -90,7 +90,7 @@
     <div class="dlabnav">
         <div class="dlabnav-scroll">
             <ul class="metismenu" id="menu">
-                <li class="{% block index %}mm-active{% endblock %}">
+                <li class="{% block index %}{% endblock %}">
                     <a class="has-arrow ai-icon" href="{% url 'index' %}" aria-expanded="false">
                         <svg t="1623587039703" class="icon" viewBox="0 0 1024 1024" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" p-id="3481" width="200" height="200">
@@ -103,8 +103,8 @@
                         <span class="nav-text">首页</span>
                     </a>
                 </li>
-                <li class="{% block entity %}{% endblock %}">
-                    <a class="has-arrow ai-icon" href="{% url 'entity' %}" aria-expanded="false">
+                <li class="{% block query %}mm-active{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'query' %}" aria-expanded="false">
                         <svg t="1623587202320" class="icon" viewBox="0 0 1024 1024" version="1.1"
                              xmlns="http://www.w3.org/2000/svg" p-id="2930" width="200" height="200">
                             <path d="M602.112 557.056l185.792 160.768a112 112 0 1 1-20.16 24.832l-185.6-160.64 19.968-24.96z m-178.944-1.024l20 24.96-186.944 161.664a112 112 0 1 1-20.16-24.832l187.104-161.792zM864 720a80 80 0 1 0 0 160 80 80 0 0 0 0-160z m-704 0a80 80 0 1 0 0 160 80 80 0 0 0 0-160z m352-672a112 112 0 0 1 16 222.848v143.744h-32V270.88A112 112 0 0 1 512 48z m0 32a80 80 0 1 0 0 160 80 80 0 0 0 0-160z"
@@ -112,7 +112,7 @@
                             <path d="M864 192a96 96 0 1 1-74.976 155.968l-172.896 122.688a112 112 0 0 1-88.096 152.224v178.464a96 96 0 1 1-32 0l-0.032-178.464a112 112 0 0 1-88.096-152.32l-172.96-122.56a96 96 0 1 1 15.584-27.904l173.344 122.784A111.808 111.808 0 0 1 512 400c35.84 0 67.712 16.8 88.192 42.976l173.28-122.912A96 96 0 0 1 864 192z m-352 240a80 80 0 1 0 0 160 80 80 0 0 0 0-160z"
                                   fill="#13C0FF" p-id="2932"></path>
                         </svg>
-                        <span class="nav-text">实体查询</span>
+                        <span class="nav-text">查询</span>
                     </a>
                 </li>
                 <li class="{% block relationship %}{% endblock %}">
