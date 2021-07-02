@@ -1,0 +1,24 @@
+{% extends 'query.html' %}
+
+{% block index %}mm-active{% endblock %}
+{% block query %}{% endblock %}
+{% block relationship %}{% endblock %}
+
+{% block body %}
+    <script src="//unpkg.com/3d-force-graph"></script>
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+    <div id="3d-graph"></div>
+
+    <script>
+        const elem = document.getElementById('3d-graph');
+
+        const Graph = ForceGraph3D()(elem)
+            .jsonUrl('../static/data/data.json')
+            .nodeAutoColorBy('label')
+            .nodeOpacity(0.95)
+            .nodeLabel(node => `<p style="">${node.label}: ${node.name}<p>`)
+            {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
+            .onNodeClick(node => alert("你好，我是一个警告框！"));
+    </script>
+{% endblock %}
