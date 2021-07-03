@@ -17,7 +17,7 @@
 
 body {
 	background: #ffffff;
-	color: #4ea2c9;
+	color: #000000;
 	font-weight: 400;
 	font-size: 1em;
 	font-family: 'Raleway', Arial, sans-serif;
@@ -35,7 +35,7 @@ a:hover, a:focus {
 }
 
 button {
-	padding: 1em 2em;
+	padding: 0.5em 1em;
 	outline: none;
 	font-weight: 600;
 	border: none;
