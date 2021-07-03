@@ -1,19 +1,533 @@
 {% extends 'query.html' %}
-
+{% load static %}
 {% block index %}{% endblock %}
 {% block query %}{% endblock %}
 {% block relationship %}mm-active{% endblock %}
 {% block body %}
+    <style type="text/css">
+        .testCon {
+            padding: 5px 15px;
+        }
+
+        h4.tesTitle {
+            color: #00B895;
+        }
+
+        .assignment {
+            margin: 30px 0 60px;
+            text-align: center;
+        }
+
+        .assignment .btn {
+            background: #00B895;
+            width: 120px;
+            font-size: 18px;
+            border-color: #00B895;
+        }
+
+        #testForm .testCon:nth-child(odd) {
+            background: #eee;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        .jxz-title {
+            text-align: justify;
+        }
+
+        .topic-answer {
+            display: none;
+        }
+    </style>
     <br>
-    <ul class="navbar-nav header-right">
-        <li class="nav-item">
-            <div class="input-group search-area d-lg-inline-flex d-none" style="width: 100%">
-                <div class="input-group-append">
-                                    <span class="input-group-text"><a href="javascript:void(0)"><i
-                                            class="flaticon-381-search-2"></i></a></span>
+    <div class="page-header">
+        <h3 class="text-center">标题--在线试卷</h3>
+    </div>
+    <form class="" id="testForm">
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">单项选择题</h4>
+
+
+            <div class="testCon" data-type="1" data-answer="A">
+                <h4 class="jxz-title">管理的首要职能是</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test00" type="radio" value="A"> A：计划
+                    </label>
                 </div>
-                <input type="text" class="form-control" placeholder="请输入关系名称...">
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test00" type="radio" value="B"> B：组织
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test00" type="radio" value="C"> C：领导
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test00" type="radio" value="D"> D：控制
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：A</p>
+                    <p>解析：无</p>
+                </div>
             </div>
-        </li>
-    </ul>
+
+            <div class="testCon" data-type="1" data-answer="A">
+                <h4 class="jxz-title">梅奥的人际关系学说属于</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test01" type="radio" value="A"> A：行为科学理论
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test01" type="radio" value="B"> B：科学管理理论
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test01" type="radio" value="C"> C：一般管理理论
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test01" type="radio" value="D"> D：权变管理理论
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：A</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+            <div class="testCon" data-type="1" data-answer="D">
+                <h4 class="jxz-title">电子产品的更新换代速度越来越快，电子企业面临的环境不确定性越来越高，该环</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test02" type="radio" value="A"> A：简单稳定
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test02" type="radio" value="B"> B：复杂稳定
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test02" type="radio" value="C"> C：简单动态
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test02" type="radio" value="D"> D：复杂动态
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：D</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">多项选择题</h4>
+
+
+            <div class="testCon" data-type="2" data-answer="A B C">
+                <h4 class="jxz-title">下列属于高层管理者的有</h4>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test10" type="checkbox" value="A"> A：董事长
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test10" type="checkbox" value="B"> B：首席执行官
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test10" type="checkbox" value="C"> C：总经理
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test10" type="checkbox" value="D"> D：项目经理
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test10" type="checkbox" value="E"> E：车间主任
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：A B C</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+            <div class="testCon" data-type="2" data-answer="A B C E">
+                <h4 class="jxz-title">组织环境的特点有</h4>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test11" type="checkbox" value="A"> A：客观性
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test11" type="checkbox" value="B"> B：复杂性
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test11" type="checkbox" value="C"> C：关联性
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test11" type="checkbox" value="D"> D：确定性
+                    </label>
+                </div>
+
+                <div class="jxz-option checkbox">
+                    <label>
+                        <input name="test11" type="checkbox" value="E"> E：层次性
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：A B C E</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">判断题</h4>
+
+
+            <div class="testCon" data-type="3" data-answer="错误">
+                <h4 class="jxz-title">科学管理研究的核心是提高员工的满意度</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test20" type="radio" value="1"> 正确
+                    </label>
+                </div>
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test20" type="radio" value="0"> 错误
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：错误</p>
+                    <p>解析：科学管理研究的核心是如何提高劳动生产率</p>
+                </div>
+            </div>
+
+            <div class="testCon" data-type="3" data-answer="正确">
+                <h4 class="jxz-title">组织文化反映一个组织的精神风貌，决定羞镪织荫在凝聚力的大小</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test21" type="radio" value="1"> 正确
+                    </label>
+                </div>
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test21" type="radio" value="0"> 错误
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：正确</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">填空题</h4>
+
+
+            <div class="testCon" data-type="4" data-answer="瑞典 英国">
+                <h4 class="jxz-title">20世纪70年代以来，资本主义国家出现“福利危机”，其代表是________和________</h4>
+
+                <div class="jxz-option">
+                                <textarea name="test30" class="form-control" style="width: 50%" rows="5"
+                                          placeholder="答案以空格隔开"></textarea>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：瑞典 英国</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">解答题</h4>
+
+
+            <div class="testCon" data-type="5" data-answer="（1）对雇员的责任；
+（2）对顾客的责任；
+（3）对竞争对手的责任；
+（4）对环境的责任；
+（5）对社会发展的责任。">
+                <h4 class="jxz-title">简述企业社会责任的具体体现</h4>
+
+                <div class="jxz-option">
+                                <textarea name="test5" class="form-control" style="width: 50%" rows="5"
+                                          placeholder=""></textarea>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：（1）对雇员的责任；
+                        （2）对顾客的责任；
+                        （3）对竞争对手的责任；
+                        （4）对环境的责任；
+                        （5）对社会发展的责任。</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">论述题</h4>
+
+
+            <div class="testCon" data-type="8"
+                 data-answer="社会革命是社会基本矛盾的必然产物。社会革命的最深刻的根源，就在于生产力和生产关系之间的矛盾以及生产力的发展就要求革命的进步的阶级消灭经济基础和上层建筑之间的矛盾。当生产关系成为生产力发展的桎梏时，生产力的发展就要求革命的进步的阶级消灭过时的旧生产关系,建立适合生产力发展的新生产关系，以解放被束缚的生产力。但旧的上层建筑，特别是国家家政权，总是要维护旧的生产关系。要解决生产力和生产关系之间的矛盾，就必须首先解决经济基础和上层建筑之间的矛盾，即改变旧的上层建筑，最主要的是消灭旧的国家政权，建立新的国家政权。">
+                <h4 class="jxz-title">试述社会革命是社会基本矛盾的必然产物。</h4>
+
+                <div class="jxz-option">
+                                <textarea name="test5" class="form-control" style="width: 50%" rows="5"
+                                          placeholder=""></textarea>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>
+                        正确答案：社会革命是社会基本矛盾的必然产物。社会革命的最深刻的根源，就在于生产力和生产关系之间的矛盾以及生产力的发展就要求革命的进步的阶级消灭经济基础和上层建筑之间的矛盾。当生产关系成为生产力发展的桎梏时，生产力的发展就要求革命的进步的阶级消灭过时的旧生产关系,建立适合生产力发展的新生产关系，以解放被束缚的生产力。但旧的上层建筑，特别是国家家政权，总是要维护旧的生产关系。要解决生产力和生产关系之间的矛盾，就必须首先解决经济基础和上层建筑之间的矛盾，即改变旧的上层建筑，最主要的是消灭旧的国家政权，建立新的国家政权。</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+            <div class="testCon" data-type="8" data-answer="(1)共产主义是历史发展的必然趋势，体现了社会发展规律的客观要求，
+是人类最美好最崇高的社会制度，因而我们要顺应历史发展的潮流，树立共产主
+义的远大社会理想。共产主义远大理想的树立，可以为人们从事各种社会实践活动提供强大的精神支柱和思想动力。共产主义远大理想是我们实现人生价值的基
+础和归宿，是凝聚一切进步社会力量、推动社会不断前进的精神航标。
+(2)我国当前正处于社会市义初级阶段，建设中国特色社会主义是我国人民的历史使命和共同理想。中国特色社会主义开创了我国社会主义发展的崭新道路，是
+科学社公主义理论与中国国情相结合的产物。
+(3)共产主义远大理想和中国特色社会主义共同理想，二者相铺相成，相互促进，
+有机联系和统一。一方面，远大理想是现阶段共同理想的奋斗目标。另一方面，
+现阶段的共同理想是远大理想的坚实基础。实现共产主义远大理想，要经过社会
+主义历史阶段的长足发展，实现中国特色社公主义的共同理想，是为实现共产主
+义远大理想而服务的。中国特色社会主义共同理想在我国的成功实践，必然为实
+现共产主义远大理想奠定坚实的基础。 ">
+                <h4 class="jxz-title">为什么要把共产主义远大理想和中国特色社会主义共同理想结合起来?</h4>
+
+                <div class="jxz-option">
+                                <textarea name="test5" class="form-control" style="width: 50%" rows="5"
+                                          placeholder=""></textarea>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：(1)共产主义是历史发展的必然趋势，体现了社会发展规律的客观要求，
+                        是人类最美好最崇高的社会制度，因而我们要顺应历史发展的潮流，树立共产主
+                        义的远大社会理想。共产主义远大理想的树立，可以为人们从事各种社会实践活动提供强大的精神支柱和思想动力。共产主义远大理想是我们实现人生价值的基
+                        础和归宿，是凝聚一切进步社会力量、推动社会不断前进的精神航标。
+                        (2)我国当前正处于社会市义初级阶段，建设中国特色社会主义是我国人民的历史使命和共同理想。中国特色社会主义开创了我国社会主义发展的崭新道路，是
+                        科学社公主义理论与中国国情相结合的产物。
+                        (3)共产主义远大理想和中国特色社会主义共同理想，二者相铺相成，相互促进，
+                        有机联系和统一。一方面，远大理想是现阶段共同理想的奋斗目标。另一方面，
+                        现阶段的共同理想是远大理想的坚实基础。实现共产主义远大理想，要经过社会
+                        主义历史阶段的长足发展，实现中国特色社公主义的共同理想，是为实现共产主
+                        义远大理想而服务的。中国特色社会主义共同理想在我国的成功实践，必然为实
+                        现共产主义远大理想奠定坚实的基础。 </p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">完形填空</h4>
+
+
+            <div class="testCon" data-type="6" data-answer="C D A B F">
+                <h4 class="jxz-title">The following paragraphs are taken from the textbooks，followed by a
+                    list of words or expressions marked A to Y. Choose the one that best completes each of
+                    the sentences and write the corresponding letter on your Answer Sheet. One word or
+                    expression for each blank only．(25 points，1 point for each)
+                    When I was graduating from college，my generation also found the world in a 32 ．The
+                    economic machinery had broken 33 almost everywhere：In this country nearly a quarter of
+                    the 34 was out of work. A major war seemed all 35 likely．As a college newspaper editor
+                    at that time，I protested against this 36 as vehemently as student activists are
+                    protesting today．
+                    I wonder if this blandness of our diet doesn’t explain 37 so many of us are overweight
+                    and even dangerously so．When things had flavor, we knew what we were eating all the 38
+                    — and it satisfied us．A 39 of my mother-in-law’s wild strawberry jam will entirely
+                    satisfy your j am desire．But，of the 40 tinned or glass-packed strawberry jam，you need
+                    half a cupful to get the 41 of what you're eating
+
+                </h4>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        A：why
+                    </label>
+                </div>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        B：while
+                    </label>
+                </div>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        C：too
+                    </label>
+                </div>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        D：at
+                    </label>
+                </div>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        E：up
+                    </label>
+                </div>
+
+                <div class="jxz-option radio-inline">
+                    <label>
+                        F：one
+                    </label>
+                </div>
+
+                <div class="jxz-option">
+                                <textarea name="test60" class="form-control" style="width: 50%" rows="5"
+                                          placeholder="答案以空格隔开"></textarea>
+                </div>
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：C D A B F</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jxz-box col-md-12">
+            <h4 class="tesTitle">阅读理解</h4>
+            <h4 class="jxz-title">Capital punishment has been in effect since the 1600’s．However, in 1972
+                the U．S．Supreme Court ruled that the death penalty was cruel and unusual punishment，which
+                was unconstitutional according to the Eighth Amendment． It was public opinion that the
+                current methods of execution，hanging， electrocution，and facing a firing squad，were too slow
+                and painful upon the person to be executed．The U．S．Supreme Court reversed this decision when
+                a cleaner way to bring about death was found in 1976．This cleaner way is death by lethal
+                injection，which is quick and painless if administered right．</h4>
+
+            <div class="testCon" data-type="7" data-answer="B">
+                <h4 class="jxz-title">The death sentence was instituted some ______ years ago</h4>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test70" type="radio" value="A"> A：200
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test70" type="radio" value="B"> B：400
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test70" type="radio" value="C"> C：300
+                    </label>
+                </div>
+
+                <div class="jxz-option radio">
+                    <label>
+                        <input name="test70" type="radio" value="D"> D：500
+                    </label>
+                </div>
+
+                <div class="topic-answer">
+                    <p>您的答案：<span class="userAnswer"></span></p>
+                    <p>正确答案：B</p>
+                    <p>解析：无</p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group assignment">
+            <button type="button" class="btn btn-primary" onclick="assignment()">交卷</button>
+        </div>
+    </form>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/test/test.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            //题型    1单选2多选3判断4填空5问答8论述题6完型填空7阅读理解
+            //json    格式参照data/test.json
+            //交卷    点击交卷后可查看对错
+            var test_id = 'get a test id';
+            test(test_id);
+        });
+    </script>
 {% endblock %}
