@@ -16,11 +16,14 @@
     <script src="//unpkg.com/3d-force-graph"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
-    <div style="width: 100%;height: 100%" id="3d-graph"></div>
+    <div id="3d-graph"></div>
     <div id="somedialog" class="dialog">
         <div class="dialog__overlay"></div>
         <div class="dialog__content">
-            <h2><strong>简介</strong>：敬请期待！</h2>
+            <p><strong>简介</strong>：敬请期待！</p>
+            <p>软件工程是一门研究用工程化方法构建和维护有效、实用和高质量的软件的学科。它涉及程序设计语言、数据库、软件开发工具、系统平台、标准、设计模式等方面。
+                在现代社会中，软件应用于多个方面。典型的软件有电子邮件、嵌入式系统、人机界面、办公套件、操作系统、编译器、数据库、游戏等。同时，各个行业几乎都有计算机软件的应用，如工业、农业、银行、航空、政府部门等。这些应用促进了经济和社会的发展，也提高了工作效率和生活效率
+                。</p>
             <div>
                 <button class="action" data-dialog-close="">关闭</button>
             </div>
@@ -36,12 +39,17 @@
         const Graph = ForceGraph3D()(elem)
             .jsonUrl('../static/data/data.json')
             .nodeAutoColorBy('label')
-            .nodeOpacity(0.95)
-            .backgroundColor('rgba(0,0,0,0)')
-            .linkColor((link) => {	//连线颜色
-                link.color='#000000'
+            .nodeOpacity(0.98)                            //节点透明度
+            .backgroundColor('rgba(0,0,0,0)')             //背景色
+            .linkOpacity(0.45)                            //连线透明度
+            .linkAutoColorBy(link => link.color)           //连线颜色
+            .linkResolution(8)                            //连线分辨率
+            .nodeResolution(30)                           //节点分辨率
+            .nodeVal(node => {
+                if (node.label === '课程')
+                    node.size = node.size * 5
             })
-            .nodeLabel(node => `<p style="font-size: 20px">${node.label}: ${node.name}<p>`)
+            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
             {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
             .onNodeClick(node => {
                 dlg.toggle.bind(dlg)(`${node.name}`)

@@ -298,7 +298,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 .footer {
-    padding-left: 21.563rem;
+    padding-left: 15.563rem;
     background-color: #F4F4F4;
 }
 
@@ -344,8 +344,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 .nav-header {
-    height: 7.5rem;
-    width: 21.563rem;
+    height: 4.5rem;
+    width: 15.563rem;
     display: inline-block;
     text-align: left;
     position: absolute;
@@ -357,7 +357,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 .nav-header .logo-abbr {
-    max-width: 52px;
+    max-width: 60px;
 }
 
 @media only screen and (max-width: 575px) {
@@ -386,8 +386,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     border-bottom: 1px solid #EEEEEE;
     color: #fff;
     text-decoration: none;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 25px;
+    padding-right: 20px;
     font-weight: 700;
 }
 
@@ -582,14 +582,14 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 .header {
-    height: 7.5rem;
+    height: 4.5rem;
     z-index: 1;
     border-bottom: 1px solid #EEEEEE;
     position: relative;
     padding: 0rem;
     background-color: #fff;
     z-index: 14;
-    padding-left: 21.563rem;
+    padding-left: 15.563rem;
     transition: all .2s ease;
 }
 
@@ -783,12 +783,12 @@ svg.pulse-svg .third-circle {
 }
 
 [data-header-position="fixed"] .content-body {
-    padding-top: 7.5rem;
+    padding-top: 4.5rem;
 }
 
 @media only screen and (max-width: 1199px) {
     [data-header-position="fixed"] .content-body {
-        padding-top: 5rem;
+        padding-top: 4.5rem;
     }
 }
 
@@ -4319,7 +4319,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 }
 
 .content-body {
-    margin-left: 21.563rem;
+    margin-left: 15.563rem;
     z-index: 0;
     transition: all .2s ease;
 }
@@ -4564,12 +4564,12 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 }
 
 .dlabnav {
-    width: 21.563rem;
+    width: 15.563rem;
     padding-bottom: 0;
     height: 100%;
     position: absolute;
     top: 0;
-    padding-top: 120px;
+    padding-top: 4.5rem;
     z-index: 3;
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(120, 130, 140, 0.13);
