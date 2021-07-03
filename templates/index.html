@@ -1,24 +1,50 @@
 {% extends 'query.html' %}
-
+{% load static %}
 {% block index %}mm-active{% endblock %}
 {% block query %}{% endblock %}
 {% block relationship %}{% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dialog.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <script src="{% static 'js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'js/classie.js' %}"></script>
+    <script src="{% static 'js/dialogFx.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
-    <div id="3d-graph"></div>
-
+    <div style="width: 100%;height: 100%" id="3d-graph"></div>
+    <div id="somedialog" class="dialog">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <h2><strong>简介</strong>：敬请期待！</h2>
+            <div>
+                <button class="action" data-dialog-close="">关闭</button>
+            </div>
+        </div>
+    </div>
     <script>
-        const elem = document.getElementById('3d-graph');
+        var somedialog = document.getElementById('somedialog'),
+            dlg = new DialogFx(somedialog);
+        console.log(somedialog)
+        console.log(dlg)
 
+        const elem = document.getElementById('3d-graph');
         const Graph = ForceGraph3D()(elem)
             .jsonUrl('../static/data/data.json')
             .nodeAutoColorBy('label')
             .nodeOpacity(0.95)
-            .nodeLabel(node => `<p style="">${node.label}: ${node.name}<p>`)
+            .backgroundColor('rgba(0,0,0,0)')
+            .linkColor((link) => {	//连线颜色
+                link.color='#000000'
+            })
+            .nodeLabel(node => `<p style="font-size: 20px">${node.label}: ${node.name}<p>`)
             {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
-            .onNodeClick(node => alert("你好，我是一个警告框！"));
+            .onNodeClick(node => {
+                dlg.toggle.bind(dlg)(`${node.name}`)
+            });
     </script>
 {% endblock %}
