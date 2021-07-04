@@ -190,11 +190,11 @@
                 <ul class="navbar-nav header-right">
                     <li class="nav-item">
                         <div class="radio">
-                            <input id="xlore" name="radio" type="radio" checked>
+                            <input id="xlore" name="radio" type="radio" value="xlore" checked>
                             <label for="xlore" class="radio-label">XLORE</label>
                         </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="radio" style="align-items: center">
-                            <input id="baike" name="radio" type="radio">
+                            <input id="baike" name="radio" type="radio" value="baidu">
                             <label for="baike" class="radio-label">百度百科</label>
                         </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="input-group search-area d-lg-inline-flex d-none" style="width: 50%">
@@ -300,7 +300,7 @@
     // 定义标签提供程序列表以自定义图形行为:
     popoto.provider.node.Provider = {
         "课程": {
-            "returnAttributes": ["name",],
+            "returnAttributes": ["name","knowledgeId"],
             "constraintAttribute": "name"
         },
         "一级知识点": {
@@ -356,8 +356,8 @@
 
     function addNode() {
         var node_name = $('#addNode').val()
-        var source = $('input:radio[name="myname"]:checked').val();
-        console.log(node_name)
+        var source = $('input:radio[name="radio"]:checked').val();
+        console.log(source)
         $.ajax({
             url: "/query/",
             type: 'post',
