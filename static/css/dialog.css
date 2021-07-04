@@ -35,12 +35,11 @@
 .dialog__content {
 	/*width: 50%;*/
 	max-width: 700px;
-	min-width: 50px;
+	min-width: 150px;
 	background: #fff;
 	padding: 2em;
 	text-align: left;
 	position: relative;
-	left: 100px;
 	z-index: 5;
 	opacity: 0;
 	border-radius:15px 15px 15px 15px;

@@ -1,73 +1,89 @@
 {% extends 'query.html' %}
 {% load static %}
+{% block status %}{% endblock %}
 {% block index %}mm-active{% endblock %}
 {% block query %}{% endblock %}
 {% block relationship %}{% endblock %}
 
 {% block body %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dialog.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
-    <script src="{% static 'js/modernizr.custom.js' %}"></script>
-    <script src="{% static 'js/classie.js' %}"></script>
-    <script src="{% static 'js/dialogFx.js' %}"></script>
+    {% block popup %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
+    {% endblock %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+    <div class="content-body">
+        <div class="container-fluid">
+            <div id="3d-graph"></div>
+            <div id="Popup" class="dialog">
+                <div class="dialog__overlay"></div>
+                <div class="dialog__content">
+                    <p id="title"></p>
+                    <p id="introduction" style="height:200px;width:400px;overflow:auto;">
+                    </p>
+                    <div style="text-align: left">
+                        <i>
+                            <svg t="1625296502770" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" p-id="4140" width="20" height="20">
+                                <path d="M722.8 459l-18.9 18.9-2.7 2.7-4.7 4.8-52.7 52.7 26.3 26.3 52.7-52.7 184.4 184.4-210.7 210.8-184.4-184.4 52.6-52.7-26.3-26.4-52.7 52.7-26.3 26.4 237.1 237.1 263.4-263.5z"
+                                      fill="#060001" p-id="4141"></path>
+                                <path d="M327.7 353.6l342.5 342.5 26.3-26.3L354 327.3z" fill="#060001"
+                                      p-id="4142"></path>
+                                <path d="M301.3 511.7L116.9 327.3l210.8-210.7L512.1 301l-52.7 52.6 26.3 26.4 52.7-52.7 26.3-26.4-237-237L64.2 327.3l237.1 237.1 26.3-26.3 52.8-52.7L354 459z"
+                                      fill="#060001" p-id="4143"></path>
+                            </svg>
+                        </i>
+                        来源：<a style="border-bottom:1px dashed #db0707;" href="#">查看详情</a>
+                    </div>
+                    <div style="text-align: right">
+                        <button class="action" data-dialog-close="">关闭</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var Popup = document.getElementById('Popup'),
+                    dlg = new DialogFx(Popup);
+                console.log(Popup)
+                console.log(dlg)
 
-    <div id="3d-graph"></div>
-    <div id="somedialog" class="dialog">
-        <div class="dialog__overlay"></div>
-        <div class="dialog__content">
-            <p><strong>软件工程简介：</strong></p>
-            <p style="height:200px;width:400px;overflow:auto;">
-                软件工程是一门研究用工程化方法构建和维护有效、实用和高质量的软件的学科。它涉及程序设计语言、数据库、软件开发工具、系统平台、标准、设计模式等方面。
-                在现代社会中，软件应用于多个方面。典型的软件有电子邮件、嵌入式系统、人机界面、办公套件、操作系统、编译器、数据库、游戏等。同时，各个行业几乎都有计算机软件的应用，如工业、农业、银行、航空、政府部门等。这些应用促进了经济和社会的发展，也提高了工作效率和生活效率
-                。</p>
-            <div style="text-align: left">
-                <i>
-                    <svg t="1625296502770" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                         xmlns="http://www.w3.org/2000/svg" p-id="4140" width="20" height="20">
-                        <path d="M722.8 459l-18.9 18.9-2.7 2.7-4.7 4.8-52.7 52.7 26.3 26.3 52.7-52.7 184.4 184.4-210.7 210.8-184.4-184.4 52.6-52.7-26.3-26.4-52.7 52.7-26.3 26.4 237.1 237.1 263.4-263.5z"
-                              fill="#060001" p-id="4141"></path>
-                        <path d="M327.7 353.6l342.5 342.5 26.3-26.3L354 327.3z" fill="#060001" p-id="4142"></path>
-                        <path d="M301.3 511.7L116.9 327.3l210.8-210.7L512.1 301l-52.7 52.6 26.3 26.4 52.7-52.7 26.3-26.4-237-237L64.2 327.3l237.1 237.1 26.3-26.3 52.8-52.7L354 459z"
-                              fill="#060001" p-id="4143"></path>
-                    </svg>
-                </i>
-                来源：<a style="border-bottom:1px dashed #db0707;" href="#">查看详情</a>
-            </div>
-            <div style="text-align: right">
-                <button class="action" data-dialog-close="">关闭</button>
-            </div>
+                const elem = document.getElementById('3d-graph');
+                const Graph = ForceGraph3D()(elem)
+                    .jsonUrl('../static/data/data.json')
+                    .nodeAutoColorBy('label')
+                    .nodeOpacity(0.98)                            //节点透明度
+                    .backgroundColor('rgba(0,0,0,0)')             //背景色
+                    .linkOpacity(0.45)                            //连线透明度
+                    .linkAutoColorBy(link => link.color)           //连线颜色
+                    .linkResolution(8)                            //连线分辨率
+                    .nodeResolution(30)                           //节点分辨率
+                    .nodeVal(node => {
+                        if (node.label === '课程')
+                            node.size = node.size * 5
+                    })
+                    .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
+                    {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
+                    .onNodeClick(node => {
+                        (function () {
+                            $.ajax({
+                                url: '/index/',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    'nodeName': `${node.name}`,
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                },
+                                success: function (data) {
+                                    {#console.log(`${node.name}`)#}
+                                    {#console.log(data.introduction)#}
+                                    $("#title").html('<strong>' + `${node.name}` + '</strong>');
+                                    $("#introduction").html(data.introduction);
+                                }
+                            })
+                        }())
+                        dlg.toggle.bind(dlg)()
+                    });
+            </script>
         </div>
     </div>
-    <script>
-        var somedialog = document.getElementById('somedialog'),
-            dlg = new DialogFx(somedialog);
-        console.log(somedialog)
-        console.log(dlg)
-
-        const elem = document.getElementById('3d-graph');
-        const Graph = ForceGraph3D()(elem)
-            .jsonUrl('../static/data/data.json')
-            .nodeAutoColorBy('label')
-            .nodeOpacity(0.98)                            //节点透明度
-            .backgroundColor('rgba(0,0,0,0)')             //背景色
-            .linkOpacity(0.45)                            //连线透明度
-            .linkAutoColorBy(link => link.color)           //连线颜色
-            .linkResolution(8)                            //连线分辨率
-            .nodeResolution(30)                           //节点分辨率
-            .nodeVal(node => {
-                if (node.label === '课程')
-                    node.size = node.size * 5
-            })
-            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
-            {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
-            .onNodeClick(node => {
-                dlg.toggle.bind(dlg)(`${node.name}`)
-            });
-    </script>
 {% endblock %}

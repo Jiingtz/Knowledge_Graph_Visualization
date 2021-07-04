@@ -13,6 +13,21 @@
     <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
     <link href="{% static 'css/popoto.min.css' %}" type="text/css" rel="stylesheet"/>
     <link href="{% static 'plugins/css/style.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/load-style.css' %}" type="text/css" rel="stylesheet">
+
+    <!--**********  弹窗样式 start  **********-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dialog.css' %}">
+    {% block popup %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-ken.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/radio.css' %}">
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <script src="{% static 'js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'js/classie.js' %}"></script>
+    <script src="{% static 'js/dialogFx.js' %}"></script>
+    <!--**********  弹窗样式 end  **********-->
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/overflow-style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet">
@@ -40,6 +55,31 @@
 </head>
 
 <body>
+{% block status %}
+    <!--** 创建成功弹窗start **-->
+    <div id="PopupSuccess" class="dialog" style="z-index: 100">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <p style="width: 220px;height: 30px;text-align: center"><strong>创建成功！</strong></p>
+            <div style="text-align: right">
+                <button id="successButton" class="action" data-dialog-close="">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--** 创建成功弹窗end **-->
+
+    <!--** 创建失败弹窗start **-->
+    <div id="PopupFail" class="dialog" style="z-index: 100">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <p style="width: 220px;height: 30px;text-align: center"><strong>创建失败，该图谱已存在！</strong></p>
+            <div style="text-align: right">
+                <button class="action" data-dialog-close="">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--** 创建失败弹窗end **-->
+{% endblock %}
 <!--**********************************
     Main wrapper start
 ***********************************-->
@@ -143,18 +183,26 @@
     <!--**********************************
         Content body start
     ***********************************-->
-    <div class="content-body">
-        <div class="container-fluid">
-            {% block body %}
+    {% block body %}
+        <div class="content-body">
+            <div class="container-fluid">
                 <br>
                 <ul class="navbar-nav header-right">
                     <li class="nav-item">
-                        <div class="input-group search-area d-lg-inline-flex d-none" style="width: 100%">
+                        <div class="radio">
+                            <input id="xlore" name="radio" type="radio" checked>
+                            <label for="xlore" class="radio-label">XLORE</label>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="radio" style="align-items: center">
+                            <input id="baike" name="radio" type="radio">
+                            <label for="baike" class="radio-label">百度百科</label>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="input-group search-area d-lg-inline-flex d-none" style="width: 50%">
                             <div class="input-group-append">
                                     <span class="input-group-text"><a href="javascript:void(0)"><i
                                             class="flaticon-381-search-2"></i></a></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="请输入内容">
+                            <input id="addNode" name="addNode" type="text" class="form-control" placeholder="请输入内容">
                         </div>
                     </li>
                 </ul>
@@ -188,9 +236,10 @@
                         <!-- Results will be generated here -->
                     </div>
                 </section>
-            {% endblock %}
+
+            </div>
         </div>
-    </div>
+    {% endblock %}
     <!--**********************************
         Content body end
     ***********************************-->
@@ -227,8 +276,21 @@
 <script src="{% static 'plugins/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
 <script src="{% static 'plugins/js/custom.min.js' %}"></script>
 <script src="{% static 'plugins/js/dlabnav-init.js' %}"></script>
+<script src="{% static 'js/load.js' %}"></script>
 <script>
+    //创建成功弹窗
+    var PopupSuccess = document.getElementById('PopupSuccess'),
+        dlgSuccess = new DialogFx(PopupSuccess);
+    console.log(PopupSuccess)
+    console.log(dlgSuccess)
 
+    //创建失败弹窗
+    var PopupFail = document.getElementById('PopupFail'),
+        dlgFail = new DialogFx(PopupFail);
+    console.log(PopupFail)
+    console.log(dlgFail)
+</script>
+<script>
     popoto.graph.link.SHOW_MARKER = true;
 
     // 连接到neo4j数据库
@@ -253,6 +315,10 @@
             "returnAttributes": ["name",],
             "constraintAttribute": "name"
         },
+        "子知识点": {
+            "returnAttributes": ["name",],
+            "constraintAttribute": "name"
+        },
     };
 
     // 更改显示结果的数量:
@@ -267,8 +333,58 @@
     });
 
     popoto.start("课程");
-
 </script>
+<script>
+    //加载层-全屏
+    function mask_fullscreen() {
+        $.mask_fullscreen();
+    }
+
+    //关闭所有加载层
+    function mask_close_all() {
+        $.mask_close_all();
+    }
+</script>
+<script>
+    $('#addNode').keydown(function (e) {
+        if (e.which === 13) {
+            mask_fullscreen()
+            addNode();
+        }
+    })
+
+
+    function addNode() {
+        var node_name = $('#addNode').val()
+        var source = $('input:radio[name="myname"]:checked').val();
+        console.log(node_name)
+        $.ajax({
+            url: "/query/",
+            type: 'post',
+            dataType: "json",
+            data: {
+                'Node': node_name,
+                'Source': source,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (data) {
+                console.log(data.status)
+                if (data.status === 'YES') {
+                    popoto.update("课程");
+                    mask_close_all()
+                    dlgSuccess.toggle.bind(dlgSuccess)()
+                    setTimeout(function () {
+                        window.location.reload();//页面刷新
+                    }, 2000);
+                } else {
+                    dlgFail.toggle.bind(dlgFail)()
+                    $('#addNode').val("");
+                }
+            }
+        });
+    }
+</script>
+
 </body>
 
 </html>
