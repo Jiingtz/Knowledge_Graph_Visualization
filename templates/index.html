@@ -13,10 +13,11 @@
     <script src="//unpkg.com/3d-force-graph"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
+    <script src="https://unpkg.com/neo4j-driver"></script>
     <div class="content-body">
         <div class="container-fluid">
             <div id="3d-graph"></div>
-            <div id="Popup" class="dialog">
+            <div id="Popup" class="dialog" style="z-index: 100">
                 <div class="dialog__overlay"></div>
                 <div class="dialog__content">
                     <p id="title"></p>
@@ -42,46 +43,76 @@
                 </div>
             </div>
             <script>
-                var Popup = document.getElementById('Popup'),
-                    dlg = new DialogFx(Popup);
-                console.log(Popup)
-                console.log(dlg)
-
                 const elem = document.getElementById('3d-graph');
-                const Graph = ForceGraph3D()(elem)
-                    .jsonUrl('../static/data/data.json')
-                    .nodeAutoColorBy('label')
-                    .nodeOpacity(0.98)                            //节点透明度
-                    .backgroundColor('rgba(0,0,0,0)')             //背景色
-                    .linkOpacity(0.45)                            //连线透明度
-                    .linkAutoColorBy(link => link.color)           //连线颜色
-                    .linkResolution(8)                            //连线分辨率
-                    .nodeResolution(30)                           //节点分辨率
-                    .nodeVal(node => {
-                        if (node.label === '课程')
-                            node.size = node.size * 5
-                    })
-                    .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
-                    {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
-                    .onNodeClick(node => {
-                        (function () {
-                            $.ajax({
-                                url: '/index/',
-                                type: 'POST',
-                                dataType: 'json',
-                                data: {
-                                    'nodeName': `${node.name}`,
-                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                                },
-                                success: function (data) {
-                                    {#console.log(`${node.name}`)#}
-                                    {#console.log(data.introduction)#}
-                                    $("#title").html('<strong>' + `${node.name}` + '</strong>');
-                                    $("#introduction").html(data.introduction);
-                                }
+                const driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', 'ztj19991124'))
+                const session = driver.session();
+                const start = new Date()
+                session
+                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), community:n.louvain, caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), community:n.louvain, caption:m.name, size:m.pagerank } as target, {weight:r.weight, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: 5000})
+                    .then(function (result) {
+                        const nodes = {}
+                        const links = result.records.map(r => {
+                            var source = r.get('source');
+                            source.id = source.id.toNumber();
+                            nodes[source.id] = source;
+                            var target = r.get('target');
+                            target.id = target.id.toNumber();
+                            nodes[target.id] = target;
+                            var rel = r.get('rel');
+                            if (rel.weight) {
+                                rel.weight = rel.weight.toNumber();
+                            }
+                            return Object.assign({source: source.id, target: target.id}, rel);
+                        });
+                        session.close();
+                        console.log(links.length + " links loaded in " + (new Date() - start) + " ms.")
+                        const gData = {nodes: Object.values(nodes), links: links}
+
+                        var Popup = document.getElementById('Popup'),
+                            dlg = new DialogFx(Popup);
+                        {#console.log(Popup)#}
+                        {#console.log(dlg)#}
+
+                        const elem = document.getElementById('3d-graph');
+                        const Graph = ForceGraph3D()(elem)
+                            .graphData(gData)
+                            {#.jsonUrl('../static/data/data.json')#}
+                            .nodeAutoColorBy('label')
+                            .nodeOpacity(0.98)                            //节点透明度
+                            .backgroundColor('rgba(0,0,0,0)')             //背景色
+                            .linkOpacity(0.45)                            //连线透明度
+                            .linkAutoColorBy(link => link.color)           //连线颜色
+                            .linkResolution(8)                            //连线分辨率
+                            .nodeResolution(30)                           //节点分辨率
+                            .linkDirectionalParticles(5)
+                            .linkDirectionalParticleWidth(1)
+                            .linkDirectionalParticleSpeed(0.0075)
+                            .nodeVal(node => {
+                                if (node.label === '课程')
+                                    node.size = node.size * 5
                             })
-                        }())
-                        dlg.toggle.bind(dlg)()
+                            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.caption}<p>`)
+                            {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
+                            .onNodeClick(node => {
+                                (function () {
+                                    $.ajax({
+                                        url: '/index/',
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        data: {
+                                            'nodeName': `${node.name}`,
+                                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                        },
+                                        success: function (data) {
+                                            {#console.log(`${node.name}`)#}
+                                            {#console.log(data.introduction)#}
+                                            $("#title").html('<strong>' + `${node.caption}` + '</strong>');
+                                            $("#introduction").html(data.introduction);
+                                        }
+                                    })
+                                }())
+                                dlg.toggle.bind(dlg)()
+                            });
                     });
             </script>
         </div>
