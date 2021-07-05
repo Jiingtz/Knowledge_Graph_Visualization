@@ -56,7 +56,9 @@
 
 <body>
 {% block status %}
-    <!--** 创建成功弹窗start **-->
+    <!--**********************************
+        创建成功弹窗start
+    ***********************************-->
     <div id="PopupSuccess" class="dialog" style="z-index: 100">
         <div class="dialog__overlay"></div>
         <div class="dialog__content">
@@ -66,9 +68,13 @@
             </div>
         </div>
     </div>
-    <!--** 创建成功弹窗end **-->
+    <!--**********************************
+        创建成功弹窗end
+    ***********************************-->
 
-    <!--** 创建失败弹窗start **-->
+    <!--**********************************
+        创建失败弹窗start
+    ***********************************-->
     <div id="PopupFail" class="dialog" style="z-index: 100">
         <div class="dialog__overlay"></div>
         <div class="dialog__content">
@@ -78,7 +84,9 @@
             </div>
         </div>
     </div>
-    <!--** 创建失败弹窗end **-->
+    <!--**********************************
+        创建失败弹窗end
+    ***********************************-->
 {% endblock %}
 <!--**********************************
     Main wrapper start
@@ -263,12 +271,7 @@
     Main wrapper end
 ***********************************-->
 
-<!--removeIf(production)-->
 
-<!--**********************************
-    Scripts
-***********************************-->
-<!-- Required vendors -->
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/d3.min.js' %}"></script>
 <script src="{% static 'js/popoto.min.js' %}"></script>
@@ -300,7 +303,7 @@
     // 定义标签提供程序列表以自定义图形行为:
     popoto.provider.node.Provider = {
         "课程": {
-            "returnAttributes": ["name","knowledgeId"],
+            "returnAttributes": ["name", "knowledgeId"],
             "constraintAttribute": "name"
         },
         "一级知识点": {

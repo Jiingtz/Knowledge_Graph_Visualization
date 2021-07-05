@@ -10,7 +10,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
     {% endblock %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="//unpkg.com/3d-force-graph"></script>
+    <script src="https://unpkg.com/3d-force-graph"></script>
+    <script src="https://unpkg.com/three"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
     <script src="https://unpkg.com/neo4j-driver"></script>
@@ -35,7 +36,7 @@
                                       fill="#060001" p-id="4143"></path>
                             </svg>
                         </i>
-                        来源：<a style="border-bottom:1px dashed #db0707;" href="#">查看详情</a>
+                        来源：<a id="origin" style="border-bottom:1px dashed #db0707;" href="#" target="_blank">查看详情</a>
                     </div>
                     <div style="text-align: right">
                         <button class="action" data-dialog-close="">关闭</button>
@@ -44,54 +45,55 @@
             </div>
             <script>
                 const elem = document.getElementById('3d-graph');
-                const driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', 'ztj19991124'))
-                const session = driver.session();
+                const driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', 'ztj19991124'))  //连接neo4j数据库
+                const session = driver.session();  //创建会话进行数据库操作
                 const start = new Date()
                 session
-                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), community:n.louvain, caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), community:n.louvain, caption:m.name, size:m.pagerank } as target, {weight:r.weight, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: 5000})
+                    //采用社区发现算法louvain进行图结构的构造
+                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:25 } as source, { id: id(m), label:head(labels(m)), name:m.name, size:5 } as target, {weight:5, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: 5000})
                     .then(function (result) {
                         const nodes = {}
                         const links = result.records.map(r => {
-                            var source = r.get('source');
+                            var source = r.get('source');  //源节点
                             source.id = source.id.toNumber();
                             nodes[source.id] = source;
-                            var target = r.get('target');
+                            var target = r.get('target');  //目的节点
                             target.id = target.id.toNumber();
                             nodes[target.id] = target;
-                            var rel = r.get('rel');
+                            var rel = r.get('rel');  //关系
                             if (rel.weight) {
                                 rel.weight = rel.weight.toNumber();
                             }
                             return Object.assign({source: source.id, target: target.id}, rel);
                         });
                         session.close();
-                        console.log(links.length + " links loaded in " + (new Date() - start) + " ms.")
+                        console.log((new Date() - start) + "毫秒内加载了" + links.length + "个链接")  //统计花费的时间
                         const gData = {nodes: Object.values(nodes), links: links}
 
                         var Popup = document.getElementById('Popup'),
                             dlg = new DialogFx(Popup);
-                        {#console.log(Popup)#}
-                        {#console.log(dlg)#}
 
                         const elem = document.getElementById('3d-graph');
                         const Graph = ForceGraph3D()(elem)
                             .graphData(gData)
-                            {#.jsonUrl('../static/data/data.json')#}
                             .nodeAutoColorBy('label')
                             .nodeOpacity(0.98)                            //节点透明度
                             .backgroundColor('rgba(0,0,0,0)')             //背景色
-                            .linkOpacity(0.45)                            //连线透明度
-                            .linkAutoColorBy(link => link.color)           //连线颜色
+                            .linkOpacity(0.4)                            //连线透明度
+                            .linkAutoColorBy(link => link.color)          //连线颜色
                             .linkResolution(8)                            //连线分辨率
                             .nodeResolution(30)                           //节点分辨率
-                            .linkDirectionalParticles(5)
-                            .linkDirectionalParticleWidth(1)
-                            .linkDirectionalParticleSpeed(0.0075)
-                            .nodeVal(node => {
-                                if (node.label === '课程')
-                                    node.size = node.size * 5
+                            .linkDirectionalParticles(5)                  //粒子数量
+                            .linkDirectionalParticleWidth(1.5)              //粒子宽度
+                            .linkDirectionalParticleSpeed(0.0075)         //粒子速度
+                            .nodeVal('size')
+                            {#.nodeRelSize(6)#}
+                            .onNodeDragEnd(node => {  //拖拽节点固定
+                                node.fx = node.x;
+                                node.fy = node.y;
+                                node.fz = node.z;
                             })
-                            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.caption}<p>`)
+                            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
                             {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
                             .onNodeClick(node => {
                                 (function () {
@@ -104,10 +106,9 @@
                                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                                         },
                                         success: function (data) {
-                                            {#console.log(`${node.name}`)#}
-                                            {#console.log(data.introduction)#}
-                                            $("#title").html('<strong>' + `${node.caption}` + '</strong>');
+                                            $("#title").html('<strong>' + `${node.name}` + '</strong>');
                                             $("#introduction").html(data.introduction);
+                                            $('#origin').attr('href', data.link);
                                         }
                                     })
                                 }())

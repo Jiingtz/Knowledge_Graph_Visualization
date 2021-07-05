@@ -19,6 +19,8 @@
     <orderEntry type="library" name="vue" level="application" />
     <orderEntry type="library" name="index" level="application" />
     <orderEntry type="library" name="neo4j-driver" level="application" />
+    <orderEntry type="library" name="3d-force-graph" level="application" />
+    <orderEntry type="library" name="three" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
