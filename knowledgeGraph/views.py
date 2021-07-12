@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import os
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from knowledgeGraph import createGraph
 from knowledgeGraph.langconv import *
 from knowledgeGraph import models
+from knowledgeGraph import csv2list
+import random
 
 
 # Create your views here.
@@ -40,4 +44,9 @@ def query(request):
 
 
 def examination(request):
-    return render(request, 'examination.html')
+    data_path = os.path.dirname(os.path.dirname(__file__))
+    SingleChoiceQuestions, MultipleChoiceQuestions, TureFalseQuestions = csv2list.getExam(data_path)
+    return render(request, 'examination.html',
+                  {'SingleChoiceQuestions': random.sample(list(SingleChoiceQuestions), 10),
+                   'MultipleChoiceQuestions': random.sample(list(MultipleChoiceQuestions), 5),
+                   'TureFalseQuestions': random.sample(list(TureFalseQuestions), 5)})
