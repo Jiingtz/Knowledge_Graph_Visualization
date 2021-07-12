@@ -39,5 +39,5 @@ def query(request):
     return render(request, 'query.html')
 
 
-def relationship(request):
-    return render(request, 'relationship.html')
+def examination(request):
+    return render(request, 'examination.html')

@@ -5124,7 +5124,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sidebar-style="full"][data-layout="vertical"] .dlabnav .metismenu > li > a {
     font-size: 18px;
-    padding: 20px 20px 20px 50px;
+    padding: 20px 20px 20px 30px;
     -webkit-transition: all 0.5s;
     -ms-transition: all 0.5s;
     transition: all 0.5s;

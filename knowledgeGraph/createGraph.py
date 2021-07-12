@@ -53,6 +53,7 @@ def data2neo(label, count, choice, max_count=5):
         # else:
     #     items, tag = mc.start_craw(label) 
     if tag:
+        print('未获取到数据')
         return
     print(label, items)
     count1 = count
@@ -82,7 +83,6 @@ def structure(label, choice, max_count=5):
     time_end = time.time()
     print('totally cost', time_end - time_start)
     return status
-
 
 # structure('软件工程', choice=1, max_count=4)
 # print(get_label_Hyponymy('软件工程'))

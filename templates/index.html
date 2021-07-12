@@ -3,7 +3,8 @@
 {% block status %}{% endblock %}
 {% block index %}mm-active{% endblock %}
 {% block query %}{% endblock %}
-{% block relationship %}{% endblock %}
+{% block examination %}{% endblock %}
+{% block dashboard_bar %}知识图谱3D可视化{% endblock %}
 
 {% block body %}
     {% block popup %}
@@ -50,7 +51,7 @@
                 const start = new Date()
                 session
                     //采用社区发现算法louvain进行图结构的构造
-                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:25 } as source, { id: id(m), label:head(labels(m)), name:m.name, size:5 } as target, {weight:5, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: 5000})
+                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:n.size } as source, { id: id(m), label:head(labels(m)), name:m.name, size:n.size } as target, {weight:5, type:type(r)} as rel LIMIT $limit', {limit: 5000})
                     .then(function (result) {
                         const nodes = {}
                         const links = result.records.map(r => {
@@ -69,7 +70,7 @@
                         session.close();
                         console.log((new Date() - start) + "毫秒内加载了" + links.length + "个链接")  //统计花费的时间
                         const gData = {nodes: Object.values(nodes), links: links}
-
+                        {#console.log(nodes)#}
                         var Popup = document.getElementById('Popup'),
                             dlg = new DialogFx(Popup);
 
@@ -83,7 +84,7 @@
                             .linkAutoColorBy(link => link.color)          //连线颜色
                             .linkResolution(8)                            //连线分辨率
                             .nodeResolution(30)                           //节点分辨率
-                            .linkDirectionalParticles(5)                  //粒子数量
+                            .linkDirectionalParticles(3)                  //粒子数量
                             .linkDirectionalParticleWidth(1.5)              //粒子宽度
                             .linkDirectionalParticleSpeed(0.0075)         //粒子速度
                             .nodeVal('size')
@@ -93,7 +94,7 @@
                                 node.fy = node.y;
                                 node.fz = node.z;
                             })
-                            .nodeLabel(node => `<p style="font-size: 20px;color: #0D0A0A">${node.label}: ${node.name}<p>`)
+                            .nodeLabel(node => `<p style="font-size: 20px;user-select:none;color: #0D0A0A">${node.label}: ${node.name}<p>`)
                             {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
                             .onNodeClick(node => {
                                 (function () {
