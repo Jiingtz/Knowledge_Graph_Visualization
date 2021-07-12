@@ -21,6 +21,7 @@
     <orderEntry type="library" name="neo4j-driver" level="application" />
     <orderEntry type="library" name="3d-force-graph" level="application" />
     <orderEntry type="library" name="three" level="application" />
+    <orderEntry type="library" name="dat.gui" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

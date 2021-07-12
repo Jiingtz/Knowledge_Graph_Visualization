@@ -11,11 +11,23 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
     {% endblock %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://unpkg.com/d3-dsv"></script>
+    <script src="https://unpkg.com/dat.gui"></script>
+    <script src="https://unpkg.com/d3-octree"></script>
+    <script src="https://unpkg.com/d3-force-3d"></script>
+
     <script src="https://unpkg.com/3d-force-graph"></script>
     <script src="https://unpkg.com/three"></script>
     <script src="//unpkg.com/vue/dist/vue.js"></script>
     <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
     <script src="https://unpkg.com/neo4j-driver"></script>
+    <style>
+        .dg.main.a {
+            width: 245px;
+            position: relative;
+            top: 80px;
+        }
+    </style>
     <div class="content-body">
         <div class="container-fluid">
             <div id="3d-graph"></div>
@@ -51,7 +63,7 @@
                 const start = new Date()
                 session
                     //采用社区发现算法louvain进行图结构的构造
-                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:n.size } as source, { id: id(m), label:head(labels(m)), name:m.name, size:n.size } as target, {weight:5, type:type(r)} as rel LIMIT $limit', {limit: 5000})
+                    .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:toInteger(n.size)*2 } as source, { id: id(m), label:head(labels(m)), name:m.name, size:toInteger(n.size)*0.5 } as target, {weight:5, type:type(r)} as rel LIMIT $limit', {limit: 5000})
                     .then(function (result) {
                         const nodes = {}
                         const links = result.records.map(r => {
@@ -70,21 +82,24 @@
                         session.close();
                         console.log((new Date() - start) + "毫秒内加载了" + links.length + "个链接")  //统计花费的时间
                         const gData = {nodes: Object.values(nodes), links: links}
-                        {#console.log(nodes)#}
+                        console.log(nodes)
                         var Popup = document.getElementById('Popup'),
                             dlg = new DialogFx(Popup);
 
                         const elem = document.getElementById('3d-graph');
                         const Graph = ForceGraph3D()(elem)
+                            .dagMode('td')
+                            .dagLevelDistance(200)
                             .graphData(gData)
                             .nodeAutoColorBy('label')
                             .nodeOpacity(0.98)                            //节点透明度
                             .backgroundColor('rgba(0,0,0,0)')             //背景色
                             .linkOpacity(0.4)                            //连线透明度
                             .linkAutoColorBy(link => link.color)          //连线颜色
+                            {#.linkColor(() => 'rgb(250,222,38)')#}
                             .linkResolution(8)                            //连线分辨率
                             .nodeResolution(30)                           //节点分辨率
-                            .linkDirectionalParticles(3)                  //粒子数量
+                            .linkDirectionalParticles(2)                  //粒子数量
                             .linkDirectionalParticleWidth(1.5)              //粒子宽度
                             .linkDirectionalParticleSpeed(0.0075)         //粒子速度
                             .nodeVal('size')
@@ -94,8 +109,8 @@
                                 node.fy = node.y;
                                 node.fz = node.z;
                             })
+                            .d3VelocityDecay(0.5)
                             .nodeLabel(node => `<p style="font-size: 20px;user-select:none;color: #0D0A0A">${node.label}: ${node.name}<p>`)
-                            {#.onNodeClick(node => window.open(`https://baike.baidu.com/item/${node.name}`, '_blank'));#}
                             .onNodeClick(node => {
                                 (function () {
                                     $.ajax({
@@ -115,6 +130,12 @@
                                 }())
                                 dlg.toggle.bind(dlg)()
                             });
+                        // controls
+                        const controls = {'DAG Orientation': 'td'};
+                        const gui = new dat.GUI();
+                        gui.add(controls, 'DAG Orientation', ['td', 'radialout', 'radialin', null])
+                            .onChange(orientation => Graph && Graph.dagMode(orientation));
+
                     });
             </script>
         </div>
