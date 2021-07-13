@@ -10,12 +10,12 @@ import time
 from knowledgeGraph import XLore_Apis as XA
 import json
 from py2neo import Graph
+from knowledgeGraph import baike
 
 g = Graph("http://localhost:7474", auth=("neo4j", "ztj19991124"))
 label_name = ['课程', '一级知识点', '二级知识点', '三级知识点', '子知识点']
 
-
-# mc = ch.MainCrawler() 
+mc = baike.MainCrawler()
 
 
 def get_label_Hyponymy(str):
@@ -50,8 +50,8 @@ def data2neo(label, count, choice, max_count=5):
         return
     if choice == 'xlore':
         items, tag = get_label_Hyponymy(label)
-        # else:
-    #     items, tag = mc.start_craw(label) 
+    else:
+        items, tag = baike.getBaiKe(label, mc)
     if tag:
         print('未获取到数据')
         return

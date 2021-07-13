@@ -95,8 +95,8 @@
                             .nodeOpacity(0.98)                            //节点透明度
                             .backgroundColor('rgba(0,0,0,0)')             //背景色
                             .linkOpacity(0.4)                            //连线透明度
-                            .linkAutoColorBy(link => link.color)          //连线颜色
-                            {#.linkColor(() => 'rgb(250,222,38)')#}
+                            {#.linkAutoColorBy(link => link.color)          //连线颜色#}
+                            .linkColor(() => 'rgb(141,141,139)')
                             .linkResolution(8)                            //连线分辨率
                             .nodeResolution(30)                           //节点分辨率
                             .linkDirectionalParticles(2)                  //粒子数量
