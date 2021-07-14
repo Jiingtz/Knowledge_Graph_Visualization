@@ -11,66 +11,52 @@
 
 <body>
 <div class="dowebok right-panel-active" id="dowebok">
-
-    <div class="form-container sign-in-container">
-        <form action="" method="post">
-            {% csrf_token %}
-            <h1>登录</h1>
-            <br>
-            <input name="login_email" type="email" placeholder="电子邮箱">
-            <input name="login_pw" type="password" placeholder="密码">
-            <a href="{% url 'index' %}">不想登录？游客访问</a>
-            <button id="login">登录</button>
-        </form>
-    </div>
     <div class="form-container sign-up-container">
-        <form method="post">
+        <form action="{% url 'register' %}" method="post" id="register_form">
             {% csrf_token %}
             <h1>注册</h1>
             <br>
-            <input id="register_name" type="text" placeholder="姓名">
-            <input id="register_email" type="email" placeholder="电子邮箱">
-            <input id="register_pw" type="password" placeholder="密码">
+            <input id="register_name" name="register_name" type="text" placeholder="姓名">
+            <span id="check_name" style='color: red'></span>
+            <input id="register_email" name="register_email" type="email" placeholder="电子邮箱">
+            <span id="check_email" style='color: red'></span>
+            <input id="register_pw" name="register_pw" type="password" placeholder="密码">
+            <span id="check_pwd" style='color: red'></span>
+            <input id="register_pw_again" name="register_pw_again" type="password" placeholder="确认密码">
+            <span id="check_cpwd" style='color: red'></span>
+            <br>
             <button id="register">注册</button>
+        </form>
+    </div>
+    <div class="form-container sign-in-container">
+        <form method="post">
+            {% csrf_token %}
+            <h1>登录</h1>
+            <br>
+            <input id="login_email" name="login_email" type="email" placeholder="电子邮箱">
+            <input id="login_pw" name="login_pw" type="password" placeholder="密码">
+            <a href="{% url 'index' %}">不想登录？游客访问</a>
+            <button id="login">登录</button>
         </form>
     </div>
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-left">
-                <h1>已有帐号？</h1>
-                <p>请使用您的帐号进行登录</p>
-                <button class="ghost" id="signIn">登录</button>
-            </div>
-            <div class="overlay-panel overlay-right">
                 <h1>没有帐号？</h1>
                 <p>立即注册加入我们，和我们一起开始旅程吧</p>
-                <button class="ghost" id="signUp">注册</button>
+                <button class="ghost" id="signIn">注册</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>已有帐号？</h1>
+                <p>请使用您的帐号进行登录</p>
+                <button class="ghost" id="signUp">登录</button>
             </div>
         </div>
     </div>
 </div>
 <script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'plugins/login/js/register.js' %}"></script>
 <script src="{% static 'plugins/login/js/dmaku.js' %}"></script>
-{#<script>#}
-{##}
-{#    $('#login').bind('click', function () {#}
-{#        var login_email = $('#login_email').val()#}
-{#        var login_pw = $('#login_pw').val()#}
-{#        $.ajax({#}
-{#            url: '/login/',#}
-{#            type: 'POST',#}
-{#            dataType: 'json',#}
-{#            data: {#}
-{#                'login_email': login_email,#}
-{#                'login_pw': login_pw,#}
-{#                'csrfmiddlewaretoken': '{{ csrf_token }}'#}
-{#            },#}
-{#            success: function (result) {#}
-{#                alter('success!')#}
-{#            }#}
-{#        })#}
-{#    })#}
-{#</script>#}
 
 </body>
 </html>

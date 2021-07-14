@@ -21,6 +21,7 @@ def getExam(data_path):
         question[1] = question[1].split('|')
         question[3] = question[3].replace('，', ',')
         question[6] = question[6].split('，')
+        question[7] = question[7].split('，')
 
     for question in multi_choice_questions:
         question[0] = question[0].replace('，', ',')
@@ -28,6 +29,7 @@ def getExam(data_path):
         question[2] = question[2].split('|')
         question[3] = question[3].replace('，', ',')
         question[6] = question[6].split('，')
+        question[7] = question[7].split('，')
 
     for question in ture_false_questions:
         question[0] = question[0].replace('，', ',')
@@ -37,6 +39,7 @@ def getExam(data_path):
         else:
             question[2] = 'False'
         question[6] = question[6].split('，')
+        question[7] = question[7].split('，')
     return single_choice_questions, multi_choice_questions, ture_false_questions
 
 

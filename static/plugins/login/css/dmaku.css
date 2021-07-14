@@ -120,13 +120,13 @@ button.ghost {
     transition: all .6s ease-in-out;
 }
 
-.sign-in-container {
+.sign-up-container {
     left: 0;
     width: 50%;
     z-index: 2;
 }
 
-.sign-up-container {
+.sign-in-container {
     left: 0;
     width: 50%;
     z-index: 1;
@@ -181,7 +181,7 @@ button.ghost {
 }
 
 /* Move signin to right */
-.dowebok.right-panel-active .sign-in-container {
+.dowebok.right-panel-active .sign-up-container {
     transform: translateY(100%);
 }
 
@@ -191,7 +191,7 @@ button.ghost {
 }
 
 /* Bring signup over signin */
-.dowebok.right-panel-active .sign-up-container {
+.dowebok.right-panel-active .sign-in-container {
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -211,87 +211,3 @@ button.ghost {
 .dowebok.right-panel-active .overlay-right {
     transform: translateY(20%);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

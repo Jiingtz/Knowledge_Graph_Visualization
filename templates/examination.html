@@ -9,16 +9,16 @@
 {% block body %}
     <div class="content-body">
         <div class="container-fluid">
-            <link href="{% static 'exam/main.css' %}" rel="stylesheet" type="text/css">
-            {#            <link href="{% static 'exam/iconfont.css' %}" rel="stylesheet" type="text/css">#}
-            <link href="{% static 'exam/test.css' %}" rel="stylesheet" type="text/css">
+            <link href="{% static 'plugins/exam/main.css' %}" rel="stylesheet" type="text/css">
+            {#            <link href="{% static 'plugins/exam/iconfont.css' %}" rel="stylesheet" type="text/css">#}
+            <link href="{% static 'plugins/exam/test.css' %}" rel="stylesheet" type="text/css">
             <!--nr start-->
             <div class="test_main">
                 <div class="nr_left">
                     <div class="test">
                         <form action="" method="post">
                             <div class="test_title">
-                                <font><input type="button" name="test_jiaojuan" value="交卷"></font>
+                                <font><input id="handIn" type="button" name="test_jiaojuan" value="交卷"></font>
                             </div>
 
                             <div class="test_content">
@@ -35,7 +35,8 @@
                                     {% for squestion in SingleChoiceQuestions %}
                                         <li id="qu_0_{{ forloop.counter }}">
                                             <div class="test_content_nr_tt">
-                                                <i>{{ forloop.counter }}</i><span>(5分)</span><font>{{ squestion.0 }}</font>
+                                                <i>{{ forloop.counter }}</i><span>(5分)</span><font
+                                                    id="s_question_{{ forloop.counter }}">{{ squestion.0 }}</font>
                                             </div>
 
                                             <div class="test_content_nr_main">
@@ -44,12 +45,9 @@
                                                         <li class="option">
 
                                                             <input type="radio" class="radioOrCheck"
-                                                                   name="answer{{ forloop.parentloop.counter }}"
+                                                                   name="s_answer{{ forloop.parentloop.counter }}"
                                                                    id="0_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-                                                            <label for="0_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-                                                                <p class="ue" style="display: inline;">
-                                                                    {{ s }}</p>
-                                                            </label>
+                                                            <label for="0_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">{{ s }}</label>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -73,7 +71,8 @@
                                     {% for tquestion in TureFalseQuestions %}
                                         <li id="qu_1_{{ forloop.counter }}">
                                             <div class="test_content_nr_tt">
-                                                <i>{{ forloop.counter }}</i><span>(4分)</span><font>{{ tquestion.0 }}</font>
+                                                <i>{{ forloop.counter }}</i><span>(4分)</span><font
+                                                    id="tf_question_{{ forloop.counter }}">{{ tquestion.0 }}</font>
                                             </div>
 
                                             <div class="test_content_nr_main">
@@ -82,12 +81,9 @@
                                                         <li class="option">
 
                                                             <input type="radio" class="radioOrCheck"
-                                                                   name="answer{{ forloop.parentloop.counter }}"
+                                                                   name="tf_answer{{ forloop.parentloop.counter }}"
                                                                    id="1_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-                                                            <label for="1_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-                                                                <p class="ue" style="display: inline;">
-                                                                    {{ t }}</p>
-                                                            </label>
+                                                            <label for="1_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">{{ t }}</label>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -112,19 +108,18 @@
                                     {% for mquestion in MultipleChoiceQuestions %}
                                         <li id="qu_2_{{ forloop.counter }}">
                                             <div class="test_content_nr_tt">
-                                                <i>{{ forloop.counter }}</i><span>(6分)</span><font>{{ mquestion.0 }}</font>
+                                                <i>{{ forloop.counter }}</i><span>(6分)</span><font
+                                                    id="m_question_{{ forloop.counter }}">{{ mquestion.0 }}</font>
                                             </div>
 
                                             <div class="test_content_nr_main">
                                                 <ul>
                                                     {% for option in mquestion.1 %}
                                                         <li class="option">
-                                                            <input type="checkbox" class="radioOrCheck" name="answer1"
+                                                            <input type="checkbox" class="radioOrCheck"
+                                                                   name="m_answer{{ forloop.parentloop.counter }}"
                                                                    id="2_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-
-                                                            <label for="2_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">
-                                                                <p class="ue" style="display: inline;">{{ option }}</p>
-                                                            </label>
+                                                            <label for="2_answer_{{ forloop.parentloop.counter }}_option_{{ forloop.counter }}">{{ option }}</label>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
@@ -236,8 +231,8 @@
             <div class="foot"></div>
 
             <script src="{% static 'js/jquery.js' %}"></script>
-            <script src="{% static 'exam/jquery.easy-pie-chart.js' %}"></script>
-            <script src="{% static 'exam/jquery.countdown.js' %}"></script>
+            <script src="{% static 'plugins/exam/jquery.easy-pie-chart.js' %}"></script>
+            <script src="{% static 'plugins/exam/jquery.countdown.js' %}"></script>
             <script>
                 $(function () {
                     $('li.option label').click(function () {
@@ -251,7 +246,72 @@
                     });
                 });
             </script>
-            <script
+            <script>
+                $('#handIn').bind('click', function () {
+                    var single_answer = new Object();
+                    var mul_answer = new Object();
+                    var tf_answer = new Object();
+                    var i = 0;
+                    //单选题
+                    for (i = 0; i < 10; i++) {
+                        var s_question = $('#s_question_' + (i + 1)).text()
+                        let s_input_dom = $('input:radio[name="s_answer' + (i + 1) + '"]:checked')
+                        if (s_input_dom.length !== 0) {
+                            let s_input_id = s_input_dom[0].id
+                            single_answer[s_question] = $('label[for="' + s_input_id + '"]').html();  //题目与用户选择的答案，key是题目，value是答案
+                        } else {
+                            single_answer[s_question] = '未作答'
+                        }
+                    }
+
+                    for (i = 0; i < 5; i++) {
+                        //判断题
+                        var tf_question = $('#tf_question_' + (i + 1)).text()
+                        let tf_input_dom = $('input:radio[name="tf_answer' + (i + 1) + '"]:checked')
+                        if (tf_input_dom.length !== 0) {
+                            let tf_input_id = tf_input_dom[0].id
+                            tf_answer[tf_question] = $('label[for="' + tf_input_id + '"]').html();
+                        } else {
+                            tf_answer[tf_question] = '未作答'
+                        }
+                        //多选题
+                        var m_question = $('#m_question_' + (i + 1)).text()
+                        let m_input_dom = $('input:checkbox[name="m_answer' + (i + 1) + '"]:checked')
+                        if (m_input_dom.length !== 0) {
+                            var m_answer = new Array()
+                            for (var j = 0; j < m_input_dom.length; j++) {
+                                console.log(m_input_dom[j].id)
+                                m_answer[j] = $('label[for="' + m_input_dom[j].id + '"]').html();
+                            }
+                            mul_answer[m_question] = m_answer
+                        } else {
+                            mul_answer[m_question] = '未作答'
+                        }
+                    }
+                    for (var key in tf_answer) { // 输出字典元素，如果字典的key是数字，输出时会自动按序输出
+                        console.log(key + ' : ' + tf_answer[key]);
+                    }
+                    {#console.log(mul_answer)#}
+                    console.log(tf_answer)
+                    var answer = JSON.stringify({
+                        'single_answer': single_answer,
+                        'tf_answer': tf_answer,
+                        'mul_answer': mul_answer,
+                    })
+                    console.log(answer)
+                    $.ajax({
+                        url: '/examination/',
+                        type: 'POST',
+                        data: {
+                            'answer': answer,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            console.log(data.score)
+                        }
+                    })
+                })
+            </script>
         </div>
     </div>
 
