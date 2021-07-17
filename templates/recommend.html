@@ -1,0 +1,336 @@
+{% extends 'query.html' %}
+{% load static %}
+{% block status %}{% endblock %}
+{% block index %}{% endblock %}
+{% block query %}{% endblock %}
+{% block examination %}{% endblock %}
+{% block dashboard_bar %}知识点推荐{% endblock %}
+{% block recommend %}mm-active{% endblock %}
+{% block body %}
+    <link href="{% static 'plugins/exam/main.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/exam/test.css' %}" rel="stylesheet" type="text/css">
+    <div class="content-body">
+        <div class="container-fluid" style="text-align:center">
+            <div id="relation" style="width: 1200px;height:600px;">
+            </div>
+        </div>
+        <br>
+        <h1 style="text-align: center">薄弱知识点专项训练</h1>
+        <div class="test_content_nr">
+            <ul>
+
+                <li id="qu_0_0">
+                    <div class="test_content_nr_tt">
+                        <i>1</i><font>Why does Yamashita want to postpone the market launch of the new ice cream?</font>
+                    </div>
+
+                    <div class="test_content_nr_main">
+                        <ul>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer1" id="0_answer_1_option_1">
+
+
+                                <label for="0_answer_1_option_1">
+                                    <p class="ue" style="display: inline;">A.He is suspicious of Adam's capability.</p>
+                                </label>
+                            </li>
+                            <li class="option">
+                                <input type="radio" class="radioOrCheck" name="answer1" id="0_answer_1_option_2">
+                                <label for="0_answer_1_option_2">
+                                    <p class="ue" style="display: inline;">B.He is not familiar with the Chinese market
+                                        and needs more time to study it.</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer1" id="0_answer_1_option_3">
+
+
+                                <label for="0_answer_1_option_3">
+                                    <p class="ue" style="display: inline;">C.As a Japanese， he is very cautious and
+                                        tries to avoid uncertain elements. Besides， he needs to consult other people in
+                                        the team before making a decision.</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer1" id="0_answer_1_option_4">
+
+
+                                <label for="0_answer_1_option_4">
+                                    <p class="ue" style="display: inline;">D.He tries to assert his authority as a new
+                                        boss here.</p>
+                                </label>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="qu_0_1">
+                    <div class="test_content_nr_tt">
+                        <i>2</i><font>Suppose you work in an American company and your direct supervisor is an American
+                        called Jack. You have found that new products are not selling well. In order to find a way to
+                        solve the problem, you are supposed to _____________.</font>
+                    </div>
+
+                    <div class="test_content_nr_main">
+                        <ul>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer2" id="0_answer_2_option_1">
+                                <label for="0_answer_2_option_1">
+                                    <p class="ue" style="display: inline;">A. put forward several rough ideas at the
+                                        same time for Jack to make the final decision</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer2" id="0_answer_2_option_2">
+                                <label for="0_answer_2_option_2">
+                                    <p class="ue" style="display: inline;">B. conduct a research， find out the reasons，
+                                        and present a proposal with persuasive data to Jack， telling him this is the
+                                        best solution</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer2" id="0_answer_2_option_3">
+
+
+                                <label for="0_answer_2_option_3">
+                                    <p class="ue" style="display: inline;">C. tell Jack about the problem， ask him to
+                                        make a decision， and execute his decision</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+                                <input type="radio" class="radioOrCheck" name="answer2" id="0_answer_2_option_4">
+                                <label for="0_answer_2_option_4">
+                                    <p class="ue" style="display: inline;">D. tell Jack you are not responsible for the
+                                        problem</p>
+                                </label>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="qu_0_2">
+                    <div class="test_content_nr_tt">
+                        <i>3</i><font>If you are going to meet a business partner in Japan, what etiquette should you
+                        observe besides the bow?</font>
+                    </div>
+                    <div class="test_content_nr_main">
+                        <ul>
+                            <li class="option">
+                                <input type="radio" class="radioOrCheck" name="answer3" id="0_answer_3_option_1">
+                                <label for="0_answer_3_option_1">
+                                    <p class="ue" style="display: inline;">
+                                        A. Having a long and firm handshake or hugging to show hospitality.</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer3" id="0_answer_3_option_2">
+                                <label for="0_answer_3_option_2">
+                                    <p class="ue" style="display: inline;">
+                                        B. Studying the Japanese business cards when receiving them.</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+                                <input type="radio" class="radioOrCheck" name="answer3" id="0_answer_3_option_3">
+                                <label for="0_answer_3_option_3">
+                                    <p class="ue" style="display: inline;">
+                                        C. Taking a seat casually because you're the guest.</p>
+                                </label>
+                            </li>
+                            <li class="option">
+                                <input type="radio" class="radioOrCheck" name="answer4" id="0_answer_3_option_4">
+                                <label for="0_answer_3_option_4">
+                                    <p class="ue" style="display: inline;">
+                                        D. Looking at your Japanese partner's eyes to show respect and that you're
+                                        listening carefully.</p>
+                                </label>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="qu_0_3">
+                    <div class="test_content_nr_tt">
+                        <i>4</i><font>What information about the market of silk charmeuse fabrics should James collect?
+                        (More than one answer)</font>
+                    </div>
+
+                    <div class="test_content_nr_main">
+                        <ul>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer4" id="0_answer_4_option_1">
+
+
+                                <label for="0_answer_4_option_1">
+                                    <p class="ue" style="display: inline;">A. Import volumes of Saudi silk charmeuse
+                                        fabrics</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer4" id="0_answer_4_option_2">
+
+
+                                <label for="0_answer_4_option_2">
+                                    <p class="ue" style="display: inline;">B. Export volumes of silk charmeuse fabrics
+                                        from China to Saudi Arabia</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer4" id="0_answer_4_option_3">
+
+
+                                <label for="0_answer_4_option_3">
+                                    <p class="ue" style="display: inline;">C. Policies and laws on the Saudi import of
+                                        silk charmeuse fabrics </p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer4" id="0_answer_4_option_4">
+
+
+                                <label for="0_answer_4_option_4">
+                                    <p class="ue" style="display: inline;">D. The market consumption of silk charmeuse
+                                        fabrics in Saudi Arabia</p>
+                                </label>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="qu_0_4">
+                    <div class="test_content_nr_tt">
+                        <i>5</i><font>The shipping mark of the invoice shall be filled in according to the stipulations
+                        of the credit or the contract. If there is no shipping mark, ________ shall be filled in.</font>
+                    </div>
+
+                    <div class="test_content_nr_main">
+                        <ul>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer5" id="0_answer_5_option_1">
+
+
+                                <label for="0_answer_5_option_1">
+                                    <p class="ue" style="display: inline;">A. NO</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer5" id="0_answer_5_option_2">
+
+                                <label for="0_answer_5_option_2">
+                                    <p class="ue" style="display: inline;">B. YES</p>
+                                </label>
+                            </li>
+
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer5" id="0_answer_5_option_3">
+
+                                <label for="0_answer_5_option_3">
+                                    <p class="ue" style="display: inline;">C. N/M</p>
+                                </label>
+                            </li>
+                            <li class="option">
+
+                                <input type="radio" class="radioOrCheck" name="answer5" id="0_answer_5_option_4">
+
+                                <label for="0_answer_5_option_4">
+                                    <p class="ue" style="display: inline;">D. MARK</p>
+                                </label>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script>
+        var chartDom = document.getElementById('relation');
+        var myChart = echarts.init(chartDom);
+        myChart.showLoading();
+        $.getJSON('../static/data/les-miserables.json', function (graph) {
+            myChart.hideLoading();
+            {#graph.nodes.forEach(function (node) {#}
+            {#    node.label = {#}
+            {#        show: node.symbolSize > 30#}
+            {#    };#}
+            {# });#}
+            option = {
+                title: {
+                    text: '用户薄弱知识图谱',
+                    {#subtext: '仅展示9种',#}
+                    top: 'top',
+                    left: 'center'
+                },
+                tooltip: {},
+                animationDuration: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                series: [
+                    {
+                        name: '用户薄弱知识点',
+                        type: 'graph',
+                        layout: 'none',
+                        data: graph.nodes,
+                        links: graph.links,
+                        categories: graph.categories,  //相当于label
+                        roam: true,
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{b}'
+                        },
+                        labelLayout: {
+                            hideOverlap: true
+                        },
+                        lineStyle: {
+                            color: 'source',
+                            curveness: 0.3,
+                            width: 3,
+                        },
+                        emphasis: {
+                            focus: 'adjacency',
+                            lineStyle: {
+                                width: 10
+                            }
+                        }
+                    }
+                ],
+            };
+            myChart.setOption(option);
+        });
+    </script>
+{% endblock %}

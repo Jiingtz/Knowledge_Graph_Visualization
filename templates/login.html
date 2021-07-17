@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'plugins/login/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/login/css/dmaku.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/login/css/massage.css' %}">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
             {% csrf_token %}
             <h1>登录</h1>
             <br>
-            <input id="login_email" name="login_email" type="email" placeholder="电子邮箱">
+            <input id="login_email" name="login_email" type="text" placeholder="电子邮箱或用户名">
             <input id="login_pw" name="login_pw" type="password" placeholder="密码">
             <a href="{% url 'index' %}">不想登录？游客访问</a>
             <button id="login">登录</button>
@@ -57,6 +58,18 @@
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'plugins/login/js/register.js' %}"></script>
 <script src="{% static 'plugins/login/js/dmaku.js' %}"></script>
-
+<script src="{% static 'plugins/login/js/coco-message.js' %}"></script>
+<script>
+    cocoMessage.config({
+        duration: 2000,
+    });
+    $('#login').bind('click', function () {
+        console.log('error:' + '{{ error }}')
+        var div1 = document.createElement("div");
+        console.log("登录成功！")
+        div1.innerText = "登录成功！";
+        cocoMessage.success(div1);
+    })
+</script>
 </body>
 </html>

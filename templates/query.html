@@ -16,13 +16,13 @@
     <link href="{% static 'css/load-style.css' %}" type="text/css" rel="stylesheet">
 
     <!--**********  弹窗样式 start  **********-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/dialog.css' %}">
     {% block popup %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-ken.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/radio.css' %}">
     {% endblock %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
     <script src="{% static 'js/modernizr.custom.js' %}"></script>
     <script src="{% static 'js/classie.js' %}"></script>
     <script src="{% static 'js/dialogFx.js' %}"></script>
@@ -128,13 +128,40 @@
                         <li class="nav-item dropdown header-profile">
                             <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="{% static 'images/head.png' %}" width="20" alt="">
+                                <img id="headPortrait" src="../static/images/head/youke.png" width="20" alt="">
+                                <script>
+                                    var obj = document.getElementById("headPortrait");
+                                    var userid =
+                                    {{ request.user.id }}
+                                    var head = userid % 9
+                                    if (typeof userid === 'number') {
+                                        let headSrc = '../static/images/head/head' + head + '.png'
+                                        let imgSrc = obj.setAttribute("src", headSrc);
+                                    }
+                                </script>
                                 <div class="header-info">
-                                    <span class="text-black">Jiing</span>
-                                    <p class="fs-12 mb-0">Super Admin</p>
+                                    <span class="text-black">{{ request.user }}</span>
+                                    <p class="fs-12 mb-0">{{ request.user.email }}</p>
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="background-color:#B0E2FF">
+                                <a href="#" class="dropdown-item ai-icon">
+                                    <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary"
+                                         width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span class="ml-2">Profile </span>
+                                </a>
+                                <a href="#" class="dropdown-item ai-icon">
+                                    <svg t="1626309077007" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                         xmlns="http://www.w3.org/2000/svg" p-id="2495" width="18" height="18">
+                                        <path d="M789.504 435.2c42.496 0 76.8 34.304 76.8 76.8v358.4c0 42.496-34.304 76.8-76.8 76.8h-563.2c-42.496 0-76.8-34.304-76.8-76.8v-358.4c0-42.496 34.304-76.8 76.8-76.8h563.2m0-76.8h-563.2c-84.992 0-153.6 68.608-153.6 153.6v358.4c0 84.992 68.608 153.6 153.6 153.6h563.2c84.992 0 153.6-68.608 153.6-153.6v-358.4c0-84.992-69.12-153.6-153.6-153.6z m-281.6-281.6c98.816 0 179.2 80.384 179.2 179.2v102.4h-358.4V256c0-98.816 79.872-179.2 179.2-179.2m0-76.8c-141.312 0-256 114.688-256 256v179.2h512V256c0-141.312-114.688-256-256-256z m0 806.4c-20.992 0-38.4-17.408-38.4-38.4v-153.6c0-20.992 17.408-38.4 38.4-38.4s38.4 17.408 38.4 38.4v153.6c0 20.992-17.408 38.4-38.4 38.4z"
+                                              fill="#67C23A" p-id="2496"></path>
+                                    </svg>
+                                    <span class="ml-2">Change Password </span>
+                                </a>
                                 <a href="{% url 'logout' %}" class="dropdown-item ai-icon">
                                     <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger"
                                          width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -203,6 +230,36 @@
                                   fill="#0090FF" p-id="2036"></path>
                         </svg>
                         <span class="nav-text">答题系统</span>
+                    </a>
+                </li>
+                <li class="{% block userAnalysis %}{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'userAnalysis' %}" aria-expanded="false">
+                        <svg t="1626314863362" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="5330" width="200" height="200">
+                            <path d="M469.333333 853.333333a334.506667 334.506667 0 0 1-47.573333-3.413333A322.133333 322.133333 0 0 1 150.613333 569.386667 320 320 0 0 1 448 213.333333v311.04a42.666667 42.666667 0 0 0 10.453333 30.293334l209.28 228.48A315.733333 315.733333 0 0 1 469.333333 853.333333z"
+                                  fill="#D9ECFF" p-id="5331"></path>
+                            <path d="M426.666667 237.653333v287.36a64 64 0 0 0 16.64 42.666667l193.493333 212.053333A294.186667 294.186667 0 0 1 469.333333 832a311.68 311.68 0 0 1-44.586666-3.2A300.586667 300.586667 0 0 1 170.666667 567.04a298.666667 298.666667 0 0 1 256-329.386667M448 192h-1.28a341.333333 341.333333 0 0 0-28.586667 678.186667A353.066667 353.066667 0 0 0 469.333333 874.666667a338.986667 338.986667 0 0 0 213.333334-74.453334A21.333333 21.333333 0 0 0 682.666667 768l-208.64-228.48a21.333333 21.333333 0 0 1-5.546667-14.293333V213.333333a21.333333 21.333333 0 0 0-21.333333-21.333333z"
+                                  fill="#409EFF" p-id="5332"></path>
+                            <path d="M533.333333 469.333333V170.666667a320 320 0 0 1 298.666667 298.666666z"
+                                  fill="#FFFFFF" p-id="5333"></path>
+                            <path d="M554.666667 194.986667A298.666667 298.666667 0 0 1 808.106667 448H554.666667V194.986667M533.333333 149.333333a21.333333 21.333333 0 0 0-21.333333 21.333334v298.666666a21.333333 21.333333 0 0 0 21.333333 21.333334h298.666667a21.333333 21.333333 0 0 0 21.333333-23.253334A341.333333 341.333333 0 0 0 535.466667 149.333333z"
+                                  fill="#409EFF" p-id="5334"></path>
+                            <path d="M851.84 533.333333h-270.933333a21.333333 21.333333 0 0 0-15.786667 35.626667L746.666667 768a21.333333 21.333333 0 0 0 31.573333 0 339.626667 339.626667 0 0 0 94.08-212.266667 21.333333 21.333333 0 0 0-20.48-22.4z"
+                                  fill="#E6A23C" p-id="5335"></path>
+                        </svg>
+                        <span class="nav-text">用户行为分析</span>
+                    </a>
+                </li>
+                <li class="{% block recommend %}{% endblock %}">
+                    <a class="has-arrow ai-icon" href="{% url 'recommend' %}" aria-expanded="false">
+                        <svg t="1626341629350" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" p-id="2306" width="200" height="200">
+                            <path d="M514.56 81.92a432.64 432.64 0 1 0 432.64 432.64A433.152 433.152 0 0 0 514.56 81.92z m0 812.30336a377.67168 377.67168 0 0 1-228.0704-76.35456 232.4736 232.4736 0 0 1-1.0496-21.89312 227.54816 227.54816 0 0 1 227.28704-227.29216 26.38336 26.38336 0 0 0 5.53984-0.59904 170.14272 170.14272 0 1 0-106.78784-33.37216A280.86272 280.86272 0 0 0 233.728 769.792a379.49952 379.49952 0 1 1 280.832 124.43136z m-1.83296-378.97216a117.08928 117.08928 0 1 1 117.08928-117.08928 117.2224 117.2224 0 0 1-117.08928 117.08928z"
+                                  fill="#2966C1" p-id="2307"></path>
+                            <path d="M752.128 686.83776l-100.9664-100.15744a26.78272 26.78272 0 0 0-37.67808 0 26.28608 26.28608 0 0 0 0 37.376l60.75904 60.28288h-218.368a26.43456 26.43456 0 1 0 0 52.86912h216.28928L613.376 796.24704a26.28608 26.28608 0 0 0 0.22528 37.376 26.78272 26.78272 0 0 0 37.67296-0.22016l100.97664-101.376a31.95392 31.95392 0 0 0-0.12288-45.18912z"
+                                  fill="#FD9A16" p-id="2308"></path>
+                        </svg>
+                        <span class="nav-text">知识点推荐</span>
                     </a>
                 </li>
             </ul>
@@ -328,10 +385,10 @@
             "returnAttributes": ["name",],
             "constraintAttribute": "name"
         },
-        "子知识点": {
-            "returnAttributes": ["name",],
-            "constraintAttribute": "name"
-        },
+        {#"子知识点": {#}
+        {#    "returnAttributes": ["name",],#}
+        {#    "constraintAttribute": "name"#}
+        {# },#}
     };
 
     // 更改显示结果的数量:

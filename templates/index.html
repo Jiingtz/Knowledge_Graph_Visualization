@@ -82,7 +82,7 @@
                         session.close();
                         console.log((new Date() - start) + "毫秒内加载了" + links.length + "个链接")  //统计花费的时间
                         const gData = {nodes: Object.values(nodes), links: links}
-                        console.log(nodes)
+                        {#console.log(nodes)#}
                         var Popup = document.getElementById('Popup'),
                             dlg = new DialogFx(Popup);
 
@@ -125,10 +125,11 @@
                                             $("#title").html('<strong>' + `${node.name}` + '</strong>');
                                             $("#introduction").html(data.introduction);
                                             $('#origin').attr('href', data.link);
+                                            dlg.toggle.bind(dlg)()
                                         }
                                     })
                                 }())
-                                dlg.toggle.bind(dlg)()
+                                {#dlg.toggle.bind(dlg)()#}
                             });
                         // controls
                         const controls = {'DAG Orientation': 'td'};

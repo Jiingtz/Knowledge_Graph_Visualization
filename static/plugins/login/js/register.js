@@ -26,20 +26,24 @@ $(function () {
             error_name = false
         }
         var username = $('#register_name').val()
-        $.getJSON('/register', {'username': username}, function (data) {
-            if (data.status === 'fail') {
-                $('#check_name').html(data.msg)
-                error_name = true
-            } else {
-                error_name = false
-            }
-        })
+        $.getJSON('/check_username/',
+            {
+                'username': username,
+            },
+            function (data) {
+                if (data.status === 'fail') {
+                    $('#check_name').html(data.msg)
+                    error_name = true
+                } else {
+                    error_name = false
+                }
+            })
     }
 
     function check_pwd() {
         var len = $('#register_pw').val().length;
-        if (len < 8 || len > 20) {
-            $('#check_pwd').html("密码长度最少8位，最长20位")
+        if (len < 6 || len > 20) {
+            $('#check_pwd').html("密码长度最少6位，最长20位")
             error_password = true
         } else {
             $('#check_pwd').html("")
@@ -63,6 +67,19 @@ $(function () {
         check_user_name();
         check_pwd();
         check_cpwd();
-        return error_password === false && error_check_password === false && error_name === false;
+        if (error_password === false && error_check_password === false && error_name === false) {
+            $('#signIn').bind('click', function () {
+                var div1 = document.createElement("div");
+                console.log("注册成功！")
+                div1.innerText = "注册成功！";
+                cocoMessage.success(div1);
+            })
+            return true
+        }else {
+            console.log("注册失败！")
+            cocoMessage.error("注册失败！", 3000);
+            return false
+        }
+
     })
 })

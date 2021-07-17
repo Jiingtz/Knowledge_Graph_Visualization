@@ -7,12 +7,16 @@ from django.http import JsonResponse
 from functools import wraps
 
 from django.urls import reverse
-
+from django.contrib import auth
+from django.contrib.auth.models import User
 from knowledgeGraph import createGraph
 from knowledgeGraph.langconv import *
 from knowledgeGraph import models
 from knowledgeGraph import csv2list
+from knowledgeGraph import recommend_nodes
+from knowledgeGraph import list2ques
 import random
+import datetime
 
 
 # Create your views here.
@@ -21,7 +25,7 @@ import random
 def login_required(func):
     @wraps(func)
     def inner(request, *args, **kwargs):
-        print(request.COOKIES)
+        # print(request.COOKIES)
         is_login = request.get_signed_cookie('is_login', salt='s28', default='error')
         if is_login != '1':
             return redirect('/login/?url={}'.format(request.path_info))
@@ -37,7 +41,7 @@ def register(request):
         user_name = request.POST.get('register_name')
         user_pwd = request.POST.get('register_pw')
         user_email = request.POST.get('register_email')
-        models.UserInfo.objects.create(userName=user_name, userPassword=user_pwd, userEmail=user_email)
+        User.objects.create_user(username=user_name, password=user_pwd, email=user_email)
         return redirect('login')
 
     return render(request, 'login.html')
@@ -45,12 +49,12 @@ def register(request):
 
 def check_username(request):
     username = request.GET.get('username')
-    print()
-    user = models.UserInfo.objects.filter(userName=username)
+    print(username)
+    user = User.objects.filter(username=username)
     if user:
-        JsonResponse({'status': 'fail', 'msg': '此用户名已被占用'})
+        return JsonResponse({'status': 'fail', 'msg': '此用户名已被占用'})
     else:
-        JsonResponse({'status': 'success', 'msg': '此用户名可用'})
+        return JsonResponse({'status': 'success', 'msg': '此用户名可用'})
 
 
 # 登录
@@ -58,18 +62,24 @@ def login(request):
     if request.method == 'POST':
         userEmail = request.POST.get('login_email')
         userPw = request.POST.get('login_pw')
-        user = models.UserInfo.objects.filter(userEmail=userEmail, userPassword=userPw)
+        if '@' in userEmail:
+            username = User.objects.filter(email=userEmail)[0].username
+            user = auth.authenticate(username=username, password=userPw)
+        else:
+            user = auth.authenticate(username=userEmail, password=userPw)
         if user:
             url = request.GET.get('url')
+            auth.login(request, user)
             if url:
                 return_url = url
             else:
                 return_url = reverse('index')
             ret = redirect(return_url)
-            ret.set_signed_cookie('is_login', '1', salt='s28')
+            ret.set_signed_cookie('is_login', '1', salt='s28', max_age=60 * 60 * 24)
             return ret
         else:
-            error = '邮箱或密码错误'
+            error = '用户名或密码错误'
+            return render(request, 'login.html', locals())
     return render(request, 'login.html', locals())
 
 
@@ -77,6 +87,7 @@ def login(request):
 def logout(request):
     ret = redirect('login')
     ret.delete_cookie('is_login')
+    auth.logout(request)
     return ret
 
 
@@ -105,7 +116,7 @@ def query(request):
     if request.method == 'POST':
         name = request.POST.get('Node')
         source = request.POST.get('Source')
-        status = createGraph.structure(name, source, 2)
+        status = createGraph.structure(name, source, 3)
         print('Node:', name)
         print('status:', status)
         return JsonResponse({'status': status}, safe=False)
@@ -122,36 +133,111 @@ def examination(request):
         mul_answer = answer.get('mul_answer')
         data_path = os.path.dirname(os.path.dirname(__file__))
         SingleChoiceQuestions, MultipleChoiceQuestions, TureFalseQuestions = csv2list.getExam(data_path)
+        now_time = datetime.datetime.now()
+        answer_time = now_time.strftime("%Y-%m-%d %H:%M")
+        print('做题时间：', answer_time)
         print(single_answer)
         print(tf_answer)
         print(mul_answer)
+        # 查看错题
+        check_wrong_answer = []
+
+        # 错误知识点ID eg:[['ITR5-1'], ['IBTP3-3-2'], ['IC4-4-1', 'ICN5-3-1', 'ICN5-2-1']
+        wrong_knowledge_id = []
+        # 错误知识点名称
+        wrong_knowledge_name = []
+
         # 单选题得分
         single_score = 0
+        # 单选题错题数
+        wrong_single_num = 0
         for key in single_answer:
-            for s_c in SingleChoiceQuestions:
-                if key == s_c[0]:
-                    if single_answer[key].split('.')[0] == s_c[2]:
+            for s_q in SingleChoiceQuestions:
+                if key == s_q[0]:  # 题目核对
+                    if single_answer[key].split('.')[0] == s_q[2]:  # 答案校对
                         single_score += 5
+                    else:
+                        check_wrong_answer.append([key, s_q[2]])
+                        for s in s_q[6]:
+                            for path in s.split('|'):
+                                wrong_knowledge_name.append(path)
+                        wrong_knowledge_id.append(s_q[7])
+                        wrong_single_num += 1
+
         print('单选题得分：', single_score)
         # 判断题得分
         tf_score = 0
+        # 判断题错题数
+        wrong_tf_num = 0
         for key in tf_answer:
-            for s_c in TureFalseQuestions:
-                if key == s_c[0]:
-                    if tf_answer[key] == s_c[2]:
+            for tf_q in TureFalseQuestions:
+                if key == tf_q[0]:  # 题目核对
+                    if tf_answer[key] == tf_q[2]:  # 答案校对
                         tf_score += 4
+                    else:
+                        check_wrong_answer.append([key, tf_q[2]])
+                        for tf in tf_q[6]:
+                            for path in tf.split('|'):
+                                wrong_knowledge_name.append(path)
+                        wrong_knowledge_id.append(tf_q[7])
+                        wrong_tf_num += 1
         print('判断题得分：', tf_score)
         # 多选题得分
         mul_score = 0
+        # 多选题错题数
+        wrong_mul_num = 0
         for key in mul_answer:
-            for s_c in MultipleChoiceQuestions:
-                if key == s_c[0]:
-                    if [i.split('.')[0] for i in mul_answer[key]] == s_c[2]:
+            for m_q in MultipleChoiceQuestions:
+                if key == m_q[0]:  # 题目核对
+                    if [i.split('.')[0] for i in mul_answer[key]] == m_q[2]:  # 答案校对
                         mul_score += 6
+                    else:
+                        check_wrong_answer.append([key, m_q[2]])
+                        for m in m_q[6]:
+                            for path in m.split('|'):
+                                wrong_knowledge_name.append(path)
+                        wrong_knowledge_id.append(m_q[7])
+                        wrong_mul_num += 1
         print('多选题得分：', mul_score)
         total_score = single_score + tf_score + mul_score
+        # 错误知识点汇总
+        # 错误知识点统计推荐  eg:[['ICN2-1-3', 4], ['IC4-3-5', 4], ['ICN3-1-3', 3]]
+        wrong_knowledge_recommend_num = {}
+        wrong_knowledge_recommend = []
+
+        for i in wrong_knowledge_id:
+            for j in i:
+                wrong_knowledge_recommend.append(j)
+
+        for key in wrong_knowledge_recommend:
+            wrong_knowledge_recommend_num[key] = wrong_knowledge_recommend_num.get(key, 0) + 1
+        wrong_knowledge_recommend_num = sorted(wrong_knowledge_recommend_num.items(), key=lambda x: x[1], reverse=True)
+        wrong_knowledge_recommend_num = [list(num) for num in wrong_knowledge_recommend_num]
+        print('知识点推荐模型输入：', wrong_knowledge_recommend_num)
+
+        Summary_wrong_knowledge_points = '|'.join(str(i) for i in wrong_knowledge_id)
+        print('错误知识点汇总：', Summary_wrong_knowledge_points)
+        print('错误题目汇总：', check_wrong_answer)
+
         print('总分：', total_score)
-        return JsonResponse({'score': total_score}, safe=False)
+        models.UserHistoryBehavior.objects.create(username=request.user.username, answer_time=answer_time,
+                                                  wrong_single_num=wrong_single_num, single_score=single_score,
+                                                  wrong_tf_num=wrong_tf_num, tf_score=tf_score,
+                                                  wrong_mul_num=wrong_mul_num, mul_score=mul_score,
+                                                  wrong_num=wrong_single_num + wrong_tf_num + wrong_mul_num,
+                                                  score=total_score,
+                                                  wrong_knowledge_points=Summary_wrong_knowledge_points)
+
+        # 统计知识点错误次数 eg:[['文化价值观', 15], ['国际贸易实务', 8], ['日本文化', 7], ['英国文化', 6], ['沟通风格', 5], ['非言语交际', 4]]
+        wrong_knowledge_num = {}
+        for key in wrong_knowledge_name:
+            wrong_knowledge_num[key] = wrong_knowledge_num.get(key, 0) + 1
+        wrong_knowledge_num = sorted(wrong_knowledge_num.items(), key=lambda x: x[1], reverse=True)
+        wrong_knowledge_num = [list(num) for num in wrong_knowledge_num]
+        print(wrong_knowledge_num[:6])
+        return JsonResponse({'score': total_score, 'wrong_knowledge_num': wrong_knowledge_num[:6],
+                             'check_wrong_answer': check_wrong_answer,
+                             'wrong_knowledge_recommend_num': wrong_knowledge_recommend_num}, safe=False)
     else:
         data_path = os.path.dirname(os.path.dirname(__file__))
         SingleChoiceQuestions, MultipleChoiceQuestions, TureFalseQuestions = csv2list.getExam(data_path)
@@ -161,7 +247,66 @@ def examination(request):
                        'TureFalseQuestions': random.sample(list(TureFalseQuestions), 5)})
 
 
+# 批改试卷
+@login_required
+def markExamination(request):
+    if request.method == 'POST':
+        data = request.POST.get('answer')
+        print(data)
+    return JsonResponse({'score': 100}, safe=False)
+
+
+# 用户行为分析
+@login_required
+def userAnalysis(request):
+    if request.method == 'POST':
+        UserBehaviors = models.UserHistoryBehavior.objects.filter(username=request.user.username)
+        history = []
+        answer_time = ['答题时间']
+        single_score = ['单选题得分']
+        tf_score = ['判断题得分']
+        mul_score = ['多选题得分']
+        if UserBehaviors:
+            for userBehavior in UserBehaviors:
+                answer_time.append(str(userBehavior.answer_time))
+                single_score.append(userBehavior.single_score)
+                tf_score.append(userBehavior.tf_score)
+                mul_score.append(userBehavior.mul_score)
+                # print('用户：', userBehavior.username)
+                # print('答题时间：', userBehavior.answer_time)
+                # print('得分：', userBehavior.score)
+                # print('薄弱知识点：', userBehavior.wrong_knowledge_points)
+            history.append(answer_time)
+            history.append(single_score)
+            history.append(tf_score)
+            history.append(mul_score)
+            # print(history)
+            return JsonResponse({'status': 'success', 'history': history}, safe=False)
+        else:
+            history.append(answer_time)
+            history.append(single_score)
+            history.append(tf_score)
+            history.append(mul_score)
+            return JsonResponse({'status': 'fail', 'history': history}, safe=False)
+    else:
+        return render(request, 'userAnalysis.html')
+
+
 # 知识点推荐页面
 @login_required
 def recommend(request):
-    pass
+    if request.method == 'POST':
+        wrong_knowledge_recommend_num = request.POST.get('wrong_knowledge_recommend_num')
+        wrong_knowledge_recommend_num = json.loads(wrong_knowledge_recommend_num)
+        print(wrong_knowledge_recommend_num)
+        knowledge_points = recommend_nodes.recommend_nodes(wrong_knowledge_recommend_num)
+        data_path = os.path.dirname(os.path.dirname(__file__))
+        print(data_path)
+        SingleChoiceQuestions, MultipleChoiceQuestions, TureFalseQuestions = csv2list.getExam(data_path)
+        oc_q_recommend, mc_q_recommend, tf_q_recommend = list2ques.get_ques_recommend(SingleChoiceQuestions,
+                                                                                      MultipleChoiceQuestions,
+                                                                                      TureFalseQuestions,
+                                                                                      knowledge_points)
+        print(oc_q_recommend, tf_q_recommend, mc_q_recommend, )
+        return JsonResponse({'status': 'yes'}, safe=False)
+    return render(request, 'recommend.html')

@@ -26,4 +26,7 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('query/', views.query, name='query'),
     path('examination/', views.examination, name='examination'),
+    path('markExamination/', views.markExamination, name='markExamination'),
+    path('userAnalysis/', views.userAnalysis, name='userAnalysis'),
+    path('recommend/', views.recommend, name='recommend'),
 ]

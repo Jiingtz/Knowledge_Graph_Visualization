@@ -1,0 +1,55 @@
+{% extends 'query.html' %}
+{% load static %}
+{% block status %}{% endblock %}
+{% block index %}{% endblock %}
+{% block query %}{% endblock %}
+{% block examination %}{% endblock %}
+{% block dashboard_bar %}用户行为分析{% endblock %}
+{% block recommend %}{% endblock %}
+{% block userAnalysis %}mm-active{% endblock %}
+{% block body %}
+    <div class="content-body">
+        <div class="container-fluid">
+            <br>
+            <script src="{% static 'js/jquery.js' %}"></script>
+            <script src="{% static 'js/echarts.min.js' %}"></script>
+            <ul class="navbar-nav header-right">
+                <li class="nav-item">
+                    <div class="input-group search-area d-lg-inline-flex d-none" style="width: 100%">
+                        {#                <div id="a" style="width: 600px;height:300px;"></div>#}
+                        {#                <script>#}
+                        {#                    var name1 = {{ name|safe }};#}
+                        {#                    var arr = {{ arr|safe }}#}
+                        {#                </script>#}
+                        {#                <script src="{% static 'js/a.js' %}"></script>#}
+                        {#                <div id="b" style="width: 600px;height:300px;"></div>#}
+                        {#                <script src="{% static 'js/b.js' %}"></script>#}
+                        {#                <br />#}
+                        <div id="c" style="width: 1200px;height:600px;"></div>
+                        <script src="{% static 'js/history.js' %}"></script>
+                        <script>
+                            (function () {
+                                $.ajax({
+                                    url: '/userAnalysis/',
+                                    type: 'POST',
+                                    data: {
+                                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                    },
+                                    success: function (data) {
+                                        if (data.status === 'success') {
+                                            history('历史行为分析图' + '\n\n用户：' + '{{ request.user }}', data.history)
+                                        } else {
+                                            history('用户：' + '{{ request.user }}' + '\t  暂无历史行为', data.history)
+                                        }
+                                    }
+                                })
+                            })()
+                            history()
+                        </script>
+                        <br/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

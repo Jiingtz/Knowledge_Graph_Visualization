@@ -10,8 +10,19 @@ class BriefIntroduction(models.Model):
     link = models.CharField(max_length=200)  # 链接
 
 
-# 用户信息表
-class UserInfo(models.Model):
-    userName = models.CharField(max_length=64, unique=True)  # 用户名
-    userEmail = models.EmailField(unique=True)  # 邮箱
-    userPassword = models.CharField(max_length=64)  # 密码
+# 用户历史行为
+class UserHistoryBehavior(models.Model):
+    username = models.CharField(max_length=64)  # 用户名
+    answer_time = models.DateTimeField()  # 做题时间
+    wrong_single_num = models.IntegerField()  # 单选题错题数量
+    single_score = models.IntegerField()  # 单选题得分
+
+    wrong_tf_num = models.IntegerField()  # 判断题错题数量
+    tf_score = models.IntegerField()  # 判断题得分
+
+    wrong_mul_num = models.IntegerField()  # 多选题错题数量
+    mul_score = models.IntegerField()  # 多选题得分
+
+    wrong_num = models.IntegerField()  # 总错题数
+    score = models.IntegerField()  # 总得分
+    wrong_knowledge_points = models.TextField()  # 错误知识点
