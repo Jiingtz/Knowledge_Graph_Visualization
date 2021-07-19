@@ -5,7 +5,7 @@
 {% block query %}{% endblock %}
 {% block examination %}{% endblock %}
 {% block dashboard_bar %}知识图谱3D可视化{% endblock %}
-
+{% block query_JS %}{% endblock %}
 {% block body %}
     {% block popup %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dialog-donna.css' %}">
@@ -18,8 +18,6 @@
 
     <script src="https://unpkg.com/3d-force-graph"></script>
     <script src="https://unpkg.com/three"></script>
-    <script src="//unpkg.com/vue/dist/vue.js"></script>
-    <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
     <script src="https://unpkg.com/neo4j-driver"></script>
     <style>
         .dg.main.a {
@@ -62,7 +60,6 @@
                 const session = driver.session();  //创建会话进行数据库操作
                 const start = new Date()
                 session
-                    //采用社区发现算法louvain进行图结构的构造
                     .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), name:n.name, size:toInteger(n.size)*2 } as source, { id: id(m), label:head(labels(m)), name:m.name, size:toInteger(n.size)*0.5 } as target, {weight:5, type:type(r)} as rel LIMIT $limit', {limit: 5000})
                     .then(function (result) {
                         const nodes = {}

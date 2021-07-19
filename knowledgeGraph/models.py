@@ -26,3 +26,11 @@ class UserHistoryBehavior(models.Model):
     wrong_num = models.IntegerField()  # 总错题数
     score = models.IntegerField()  # 总得分
     wrong_knowledge_points = models.TextField()  # 错误知识点
+
+
+# 用户错误（薄弱）知识点次数表
+class WrongKnowledgeNum(models.Model):
+    knowledgeName = models.CharField(max_length=64)  # 错误知识点名称
+    knowledgeID = models.CharField(max_length=64)  # 错误知识点ID
+    WrongNum = models.IntegerField()  # 错误次数
+    username = models.CharField(max_length=64)  # 用户名

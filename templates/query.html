@@ -27,10 +27,12 @@
     <script src="{% static 'js/classie.js' %}"></script>
     <script src="{% static 'js/dialogFx.js' %}"></script>
     <!--**********  弹窗样式 end  **********-->
-
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/element-ui@2.15.3/lib/index.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/overflow-style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/element-ui@2.15.3/lib/theme-chalk/index.css">
     <style>
         #popoto-graph:fullscreen {
             width: 100%;
@@ -277,21 +279,35 @@
             <div class="container-fluid">
                 <br>
                 <ul class="navbar-nav header-right">
-                    <li class="nav-item" style="align-items: baseline;justify-content: space-evenly">
+                    <li class="nav-item" style="justify-content: space-evenly">
                         <div class="radio">
                             <input id="xlore" name="radio" type="radio" value="xlore" checked>
                             <label for="xlore" class="radio-label">XLORE</label>
-                        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                         <div class="radio">
                             <input id="baike" name="radio" type="radio" value="baidu">
                             <label for="baike" class="radio-label">百度百科</label>
-                        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div class="input-group search-area d-lg-inline-flex d-none" style="width: 50%">
-                            <div class="input-group-append">
+                        </div>
+                        <div id="select">
+                            <template>
+                                <el-select v-model="value" @change="changeValue" maxlength=12 style="width: 270px"
+                                           placeholder="请选择图谱深度（推荐：2层）">
+                                    <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
+                        <div class="input-group search-area d-lg-inline-flex d-none" style="width: 40%">
+                            <div class="input-group-append" style="height:50px">
                                     <span class="input-group-text"><a href="javascript:void(0)"><i
                                             class="flaticon-381-search-2"></i></a></span>
                             </div>
-                            <input id="addNode" name="addNode" type="text" class="form-control" placeholder="请输入内容">
+                            <input id="addNode" name="addNode" type="text" style="height:50px" class="form-control"
+                                   placeholder="请输入需要构建的课程名称">
                         </div>
                     </li>
                 </ul>
@@ -347,6 +363,8 @@
 <script src="{% static 'plugins/js/custom.min.js' %}"></script>
 <script src="{% static 'plugins/js/dlabnav-init.js' %}"></script>
 <script src="{% static 'js/load.js' %}"></script>
+
+{% block query_JS %}
 <script>
     //创建成功弹窗
     var PopupSuccess = document.getElementById('PopupSuccess'),
@@ -360,6 +378,7 @@
     console.log(PopupFail)
     console.log(dlgFail)
 </script>
+
 <script>
     popoto.graph.link.SHOW_MARKER = true;
 
@@ -416,17 +435,52 @@
     }
 </script>
 <script>
+    //选择构建深度
+    var Main = {
+        data() {
+            return {
+                options: [{
+                    value: '1',
+                    label: '1层（仅一、二级知识点，时间较短）'
+                }, {
+                    value: '2',
+                    label: '2层（一、二、三级知识点，推荐）'
+                }, {
+                    value: '3',
+                    label: '深层（所有知识点，时间较长）'
+                }],
+                value: ''
+            }
+        }
+    }
+    var depth = null
+    var Ctor = Vue.extend(Main)
+    new Ctor({
+        methods: {
+            changeValue(value) {
+                console.log(value);
+                let obj = {};
+                obj = this.options.find((item) => {
+                    depth = value
+                    return item.value === value;
+                });
+                console.log(obj.label);
+            }
+        }
+    }).$mount('#select')
+
+
     $('#addNode').keydown(function (e) {
         if (e.which === 13) {
+            var node_name = $('#addNode').val()
+            var source = $('input:radio[name="radio"]:checked').val();
             mask_fullscreen()
-            addNode();
+            addNode(node_name, source, depth);
         }
     })
 
 
-    function addNode() {
-        var node_name = $('#addNode').val()
-        var source = $('input:radio[name="radio"]:checked').val();
+    function addNode(node_name, source, depth) {
         console.log(source)
         $.ajax({
             url: "/query/",
@@ -435,6 +489,7 @@
             data: {
                 'Node': node_name,
                 'Source': source,
+                'Depth': depth,
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function (data) {
@@ -445,7 +500,7 @@
                     dlgSuccess.toggle.bind(dlgSuccess)()
                     setTimeout(function () {
                         window.location.reload();//页面刷新
-                    }, 2000);
+                    }, 1500);
                 } else {
                     dlgFail.toggle.bind(dlgFail)()
                     $('#addNode').val("");
@@ -454,7 +509,7 @@
         });
     }
 </script>
-
+{% endblock %}
 </body>
 
 </html>

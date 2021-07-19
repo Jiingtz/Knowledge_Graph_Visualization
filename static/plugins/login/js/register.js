@@ -1,5 +1,4 @@
 $(function () {
-    console.log('jianchakaishi')
     var error_name = false
     var error_password = false
     var error_check_password = false

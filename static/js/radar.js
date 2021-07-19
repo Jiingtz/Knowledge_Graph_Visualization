@@ -24,12 +24,12 @@ function radar(user, data) {
                 }
             },
             indicator: [
-                {name: data[0][0], max: 20},
-                {name: data[1][0], max: 20},
-                {name: data[2][0], max: 20},
-                {name: data[3][0], max: 20},
-                {name: data[4][0], max: 20},
-                {name: data[5][0], max: 20}
+                {name: data[0][0], max: 15},
+                {name: data[1][0], max: 15},
+                {name: data[2][0], max: 15},
+                {name: data[3][0], max: 15},
+                {name: data[4][0], max: 15},
+                {name: data[5][0], max: 15}
             ]
         },
         series: [{

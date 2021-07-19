@@ -8,11 +8,11 @@
 {% block query %}{% endblock %}
 {% block examination %}mm-active{% endblock %}
 {% block dashboard_bar %}答题系统{% endblock %}
+{% block query_JS %}{% endblock %}
 {% block body %}
     <div class="content-body">
         <div class="container-fluid">
             <link href="{% static 'plugins/exam/main.css' %}" rel="stylesheet" type="text/css">
-            {#            <link href="{% static 'plugins/exam/iconfont.css' %}" rel="stylesheet" type="text/css">#}
             <link href="{% static 'plugins/exam/test.css' %}" rel="stylesheet" type="text/css">
             <!--nr start-->
             <div class="test_main">
@@ -244,7 +244,7 @@
                         <div style="height:400px;width:500px;">
                             <div id="radar" style="height: 400px;width: auto"></div>
                             <div style="text-align: right">
-                                <button id="check_wrong" class="action">题目推荐</button>&emsp;
+{#                                <button id="check_wrong" class="action">题目推荐</button>&emsp;#}
                                 <button class="action" data-dialog-close>关闭</button>
                             </div>
                         </div>
