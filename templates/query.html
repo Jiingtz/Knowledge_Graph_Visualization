@@ -77,7 +77,7 @@
     <!--**********************************
         创建失败弹窗start
     ***********************************-->
-    <div id="PopupFail" class="dialog" style="z-index: 100">
+    <div id="PopupFail" class="dialog" style="z-index: 1002">
         <div class="dialog__overlay"></div>
         <div class="dialog__content">
             <p style="width: 220px;height: 30px;text-align: center"><strong>创建失败，该图谱已存在！</strong></p>
@@ -300,6 +300,7 @@
                                     </el-option>
                                 </el-select>
                             </template>
+                            <span id="depth" style="color: red"></span>
                         </div>
                         <div class="input-group search-area d-lg-inline-flex d-none" style="width: 40%">
                             <div class="input-group-append" style="height:50px">
@@ -365,150 +366,159 @@
 <script src="{% static 'js/load.js' %}"></script>
 
 {% block query_JS %}
-<script>
-    //创建成功弹窗
-    var PopupSuccess = document.getElementById('PopupSuccess'),
-        dlgSuccess = new DialogFx(PopupSuccess);
-    console.log(PopupSuccess)
-    console.log(dlgSuccess)
+    <script>
+        //创建成功弹窗
+        var PopupSuccess = document.getElementById('PopupSuccess'),
+            dlgSuccess = new DialogFx(PopupSuccess);
+        console.log(PopupSuccess)
+        console.log(dlgSuccess)
 
-    //创建失败弹窗
-    var PopupFail = document.getElementById('PopupFail'),
-        dlgFail = new DialogFx(PopupFail);
-    console.log(PopupFail)
-    console.log(dlgFail)
-</script>
+        //创建失败弹窗
+        var PopupFail = document.getElementById('PopupFail'),
+            dlgFail = new DialogFx(PopupFail);
+        console.log(PopupFail)
+        console.log(dlgFail)
+    </script>
 
-<script>
-    popoto.graph.link.SHOW_MARKER = true;
+    <script>
+        popoto.graph.link.SHOW_MARKER = true;
 
-    // 连接到neo4j数据库
-    popoto.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit";
-    popoto.rest.AUTHORIZATION = "Basic " + btoa("neo4j:ztj19991124");
+        // 连接到neo4j数据库
+        popoto.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit";
+        popoto.rest.AUTHORIZATION = "Basic " + btoa("neo4j:ztj19991124");
 
-    // 定义标签提供程序列表以自定义图形行为:
-    popoto.provider.node.Provider = {
-        "课程": {
-            "returnAttributes": ["name", "knowledgeId"],
-            "constraintAttribute": "name"
-        },
-        "一级知识点": {
-            "returnAttributes": ["name",],
-            "constraintAttribute": "name"
-        },
-        "二级知识点": {
-            "returnAttributes": ["name",],
-            "constraintAttribute": "name"
-        },
-        "三级知识点": {
-            "returnAttributes": ["name",],
-            "constraintAttribute": "name"
-        },
-        {#"子知识点": {#}
-        {#    "returnAttributes": ["name",],#}
-        {#    "constraintAttribute": "name"#}
-        {# },#}
-    };
-
-    // 更改显示结果的数量:
-    popoto.query.RESULTS_PAGE_SIZE = 100;
-    // 在Web浏览器控制台中添加调试跟踪
-    popoto.logger.LEVEL = popoto.logger.LogLevels.INFO;
-    // 在返回的结果计数上添加一个侦听器以更新页面中的计数
-    popoto.result.onTotalResultCount(function (count) {
-        d3.select("#rescount").text(function (d) {
-            return "(" + count + ")";
-        });
-    });
-
-    popoto.start("课程");
-</script>
-<script>
-    //加载层-全屏
-    function mask_fullscreen() {
-        $.mask_fullscreen();
-    }
-
-    //关闭所有加载层
-    function mask_close_all() {
-        $.mask_close_all();
-    }
-</script>
-<script>
-    //选择构建深度
-    var Main = {
-        data() {
-            return {
-                options: [{
-                    value: '1',
-                    label: '1层（仅一、二级知识点，时间较短）'
-                }, {
-                    value: '2',
-                    label: '2层（一、二、三级知识点，推荐）'
-                }, {
-                    value: '3',
-                    label: '深层（所有知识点，时间较长）'
-                }],
-                value: ''
-            }
-        }
-    }
-    var depth = null
-    var Ctor = Vue.extend(Main)
-    new Ctor({
-        methods: {
-            changeValue(value) {
-                console.log(value);
-                let obj = {};
-                obj = this.options.find((item) => {
-                    depth = value
-                    return item.value === value;
-                });
-                console.log(obj.label);
-            }
-        }
-    }).$mount('#select')
-
-
-    $('#addNode').keydown(function (e) {
-        if (e.which === 13) {
-            var node_name = $('#addNode').val()
-            var source = $('input:radio[name="radio"]:checked').val();
-            mask_fullscreen()
-            addNode(node_name, source, depth);
-        }
-    })
-
-
-    function addNode(node_name, source, depth) {
-        console.log(source)
-        $.ajax({
-            url: "/query/",
-            type: 'post',
-            dataType: "json",
-            data: {
-                'Node': node_name,
-                'Source': source,
-                'Depth': depth,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
+        // 定义标签提供程序列表以自定义图形行为:
+        popoto.provider.node.Provider = {
+            "课程": {
+                "returnAttributes": ["name", "knowledgeId"],
+                "constraintAttribute": "name"
             },
-            success: function (data) {
-                console.log(data.status)
-                if (data.status === 'YES') {
-                    popoto.update("课程");
-                    mask_close_all()
-                    dlgSuccess.toggle.bind(dlgSuccess)()
-                    setTimeout(function () {
-                        window.location.reload();//页面刷新
-                    }, 1500);
-                } else {
-                    dlgFail.toggle.bind(dlgFail)()
-                    $('#addNode').val("");
+            "一级知识点": {
+                "returnAttributes": ["name",],
+                "constraintAttribute": "name"
+            },
+            "二级知识点": {
+                "returnAttributes": ["name",],
+                "constraintAttribute": "name"
+            },
+            "三级知识点": {
+                "returnAttributes": ["name",],
+                "constraintAttribute": "name"
+            },
+            {#"子知识点": {#}
+            {#    "returnAttributes": ["name",],#}
+            {#    "constraintAttribute": "name"#}
+            {# },#}
+        };
+
+        // 更改显示结果的数量:
+        popoto.query.RESULTS_PAGE_SIZE = 100;
+        // 在Web浏览器控制台中添加调试跟踪
+        popoto.logger.LEVEL = popoto.logger.LogLevels.INFO;
+        // 在返回的结果计数上添加一个侦听器以更新页面中的计数
+        popoto.result.onTotalResultCount(function (count) {
+            d3.select("#rescount").text(function (d) {
+                return "(" + count + ")";
+            });
+        });
+
+        popoto.start("课程");
+    </script>
+    <script>
+        //加载层-全屏
+        function mask_fullscreen() {
+            $.mask_fullscreen();
+        }
+
+        //关闭所有加载层
+        function mask_close_all() {
+            $.mask_close_all();
+        }
+    </script>
+    <script>
+        //选择构建深度
+        var Main = {
+            data() {
+                return {
+                    options: [{
+                        value: '1',
+                        label: '1层（仅一、二级知识点，时间较短）'
+                    }, {
+                        value: '2',
+                        label: '2层（一、二、三级知识点，推荐）'
+                    }, {
+                        value: '3',
+                        label: '深层（所有知识点，时间较长）'
+                    }],
+                    value: ''
                 }
             }
-        });
-    }
-</script>
+        }
+        var depth = null
+        var Ctor = Vue.extend(Main)
+        new Ctor({
+            methods: {
+                changeValue(value) {
+                    console.log(value);
+                    let obj = {};
+                    obj = this.options.find((item) => {
+                        depth = value
+                        return item.value === value;
+                    });
+                    $('#depth').html("")
+                    console.log(obj.label);
+                }
+            }
+        }).$mount('#select')
+
+
+        $('#addNode').keydown(function (e) {
+            if (e.which === 13) {
+                var node_name = $('#addNode').val()
+                var source = $('input:radio[name="radio"]:checked').val();
+                if (depth !== null) {
+                    mask_fullscreen()
+                    addNode(node_name, source, depth);
+                }else {
+                    $('#depth').html("请选择图谱深度")
+                }
+            }
+        })
+
+
+        function addNode(node_name, source, depth) {
+            console.log(source)
+            $.ajax({
+                url: "/query/",
+                type: 'post',
+                dataType: "json",
+                data: {
+                    'Node': node_name,
+                    'Source': source,
+                    'Depth': depth,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data.status)
+                    if (data.status === 'YES') {
+                        popoto.update("课程");
+                        mask_close_all()
+                        dlgSuccess.toggle.bind(dlgSuccess)()
+                        setTimeout(function () {
+                            window.location.reload();//页面刷新
+                        }, 1500);
+                    } else {
+                        dlgFail.toggle.bind(dlgFail)()
+                        $('#addNode').val("");
+                        mask_close_all()
+                        setTimeout(function () {
+                            window.location.reload();//页面刷新
+                        }, 1500);
+                    }
+                }
+            });
+        }
+    </script>
 {% endblock %}
 </body>
 
