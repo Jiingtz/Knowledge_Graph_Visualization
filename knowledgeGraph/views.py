@@ -3,6 +3,7 @@ import json
 import os
 
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from functools import wraps
 
@@ -22,19 +23,19 @@ import datetime
 
 # Create your views here.
 
-# 判断是否登录
-def login_required(func):
-    @wraps(func)
-    def inner(request, *args, **kwargs):
-        # print(request.COOKIES)
-        is_login = request.get_signed_cookie('is_login', salt='s28', default='error')
-        if is_login != '1':
-            return redirect('/login/?next={}'.format(request.path_info))
-        ret = func(request, *args, **kwargs)
-        return ret
-
-    return inner
-
+# # 判断是否登录
+# def login_required(func):
+#     @wraps(func)
+#     def inner(request, *args, **kwargs):
+#         # print(request.COOKIES)
+#         is_login = request.get_signed_cookie('is_login', salt='s28', default='error')
+#         if is_login != '1':
+#             return redirect('/login/?next={}'.format(request.path_info))
+#         ret = func(request, *args, **kwargs)
+#         return ret
+#
+#     return inner
+#
 
 # 注册
 def register(request):
@@ -78,7 +79,7 @@ def login(request):
             else:
                 return_url = reverse('index')
             ret = redirect(return_url)
-            ret.set_signed_cookie('is_login', '1', salt='s28', max_age=60 * 60 * 24)
+            # ret.set_signed_cookie('is_login', '1', salt='s28', max_age=60 * 60 * 24)
             status = 1
             return ret
         else:
@@ -111,7 +112,13 @@ def index(request):
         print(nodeName)
         print(introduction)
         return JsonResponse({'introduction': introduction, 'link': link}, safe=False)
-    return render(request, 'index.html')
+    else:
+        if request.user.username:
+            return render(request, 'index.html')
+        else:
+            user = auth.authenticate(username='jingluo', password=123456)
+            auth.login(request, user)
+            return render(request, 'index.html')
 
 
 # 知识图谱查询与创建
